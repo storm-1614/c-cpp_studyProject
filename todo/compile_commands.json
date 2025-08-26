@@ -1,0 +1,28 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-Iinclude",
+      "-o",
+      "todo",
+      "./src/main.cpp"
+    ],
+    "directory": "/data/project/todo",
+    "file": "/data/project/todo/src/main.cpp",
+    "output": "/data/project/todo/todo"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-Iinclude",
+      "-o",
+      "todo",
+      "./src/todo.cpp"
+    ],
+    "directory": "/data/project/todo",
+    "file": "/data/project/todo/src/todo.cpp",
+    "output": "/data/project/todo/todo"
+  }
+]
