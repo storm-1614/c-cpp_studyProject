@@ -1,0 +1,14 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-o",
+      "./ncurses",
+      "./ncurses.cpp"
+    ],
+    "directory": "/data/project/ncurses",
+    "file": "/data/project/ncurses/ncurses.cpp",
+    "output": "/data/project/ncurses/ncurses"
+  }
+]
