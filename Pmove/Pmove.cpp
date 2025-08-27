@@ -6,6 +6,10 @@
 #include <utility>
 #include <vector>
 
+#define VOID 0
+#define MAN 1
+#define FOOD 2
+
 class person {
    private:
     std::vector<std::vector<int>> map;
@@ -18,9 +22,9 @@ class person {
         printw("Use w a s d to move man, <esc> to exit.\n");
         for (int x = 0; x < width; ++x) {
             for (int y = 0; y < width; ++y) {
-                if (map[x][y] == 1)
+                if (map[x][y] == MAN)
                     printw("P ");
-                else if (map[x][y] == 2)
+                else if (map[x][y] == FOOD)
                     printw("& ");
                 else
                     printw(". ");
@@ -52,10 +56,10 @@ class person {
         if (newX < 0 || newX >= width || newY < 0 || newY >= width) {
             return false;
         } else {
-            map[Px][Py] = 0;
+            map[Px][Py] = VOID;
             Px = newX;
             Py = newY;
-            map[Px][Py] = 1;
+            map[Px][Py] = MAN;
             return true;
         }
     }
@@ -68,7 +72,7 @@ class person {
             return false;
     }
     void randFood() {
-        map[food.first][food.second] = 1;
+        map[food.first][food.second] = MAN;
         while (1) {
             if (food.first == Px && food.second == Py) {
                 food.first = rand() % width;
@@ -76,7 +80,7 @@ class person {
             } else
                 break;
         }
-        map[food.first][food.second] = 2;
+        map[food.first][food.second] = FOOD;
     }
     void initMap(int initX, int initY) {
         map.resize(width, std::vector<int>(width, 0));
@@ -84,7 +88,7 @@ class person {
         Py = initY;
         food.first = rand() % width;
         food.second = rand() % width;
-        map[Px][Py] = 1;
+        map[Px][Py] = MAN;
         randFood();
         display();
     }
