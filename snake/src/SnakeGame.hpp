@@ -2,6 +2,9 @@
 #include <ncurses.h>
 #include <unistd.h>
 
+#include <cstdlib>
+#include <ctime>
+
 #include "Apple.hpp"
 #include "Board.hpp"
 #include "Empty.hpp"
@@ -43,46 +46,77 @@ class SnakeGame {
     // Update element.
     void updateState() {
         gameboard.redraw();
-        apple = new Apple(8, 10);
-        gameboard.add(*apple);
 
-        snake.addNewHead(snake.SnakePieceNext());
-        gameboard.add(snake.head());
+        SnakePiece next = snake.SnakePieceNext();
 
-        Empty replace(snake.tail().getY(), snake.tail().getX());
-        gameboard.add(replace);
-        snake.removeOldTail();
+        if (apple != NULL) {
+            switch (gameboard.getChAt(next.getY(), next.getX())) {
+                case 'A':
+                    delete apple;
+                    apple = NULL;
+                    snake.addNewHead(next);
+                    gameboard.add(snake.head());
+
+                    break;
+
+                case ' ': {
+                    snake.addNewHead(next);
+                    gameboard.add(snake.head());
+
+                    Empty replace(snake.tail().getY(), snake.tail().getX());
+                    gameboard.add(replace);
+                    snake.removeOldTail();
+                    break;
+                }
+                default:
+                    game_over = true;
+                    break;
+            }
+        }
+        if (apple == NULL) {
+            int y, x;
+            gameboard.getEmptyCoordinate(y, x);
+            apple = new Apple(y, x);
+            gameboard.add(*apple);
+        }
     }
 
     // Redraw Window
     void redraw() { gameboard.redraw(); }
 
-    void initSnake() {
+    void initall() {
         snake.addNewHead(SnakePiece(2, 2));
         gameboard.add(snake.head());
 
         snake.addNewHead(snake.SnakePieceNext());
         gameboard.add(snake.head());
+
         snake.setDirection(down);
         snake.addNewHead(snake.SnakePieceNext());
         gameboard.add(snake.head());
+
+        int y, x;
+        gameboard.getEmptyCoordinate(y, x);
+        apple = new Apple(y, x);
+        gameboard.add(*apple);
     }
 
    public:
     // Game loop;
     SnakeGame() {
+        srand(time(NULL));
         int size = 10;
         // draw window
         gameboard = Board(size, size * 2);
 
-        initSnake();
+        initall();
 
         while (!game_over) {
             processInput();
             updateState();
             redraw();
-            sleep(1);
+            gameboard.sleep();
         }
     }
-    ~SnakeGame() {}
+    ~SnakeGame() { delete apple; }
 };

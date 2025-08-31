@@ -1,11 +1,13 @@
 #pragma once
 #include <ncurses.h>
 
+#include <cstdlib>
+
 #include "Drawable.hpp"
 
 class Board {
    private:
-    WINDOW* board_win;
+    WINDOW *board_win;
     int y, x, col, row;
 
    public:
@@ -41,4 +43,18 @@ class Board {
     }
 
     chtype getInput() { return wgetch(board_win); }
+
+    int getX() { return x; }
+
+    int getY() { return y; }
+
+    //use random number find blank character, if is blank, stop loop;
+    void getEmptyCoordinate(int &y, int &x) {
+        while (mvwinch(board_win, y = rand() % col, x = rand() % row) != ' ');
+    }
+
+    // Get coordinate character.
+    int getChAt(int y, int x) { return mvwinch(board_win, y, x); }
+
+    void sleep() { wtimeout(board_win, 300); }
 };
