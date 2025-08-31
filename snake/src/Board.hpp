@@ -18,7 +18,6 @@ class Board {
     }
     Board() {}
 
-    //initialize window, config window
     void initialize() {
         getmaxyx(stdscr, y, x);
         y *= 0.25;
@@ -57,6 +56,5 @@ class Board {
     // Get coordinate character.
     int getChAt(int y, int x) { return mvwinch(board_win, y, x); }
 
-    //sleep window
-    void sleep(int time) { wtimeout(board_win, time); }
+    void sleep() { wtimeout(board_win, 300); }
 };
