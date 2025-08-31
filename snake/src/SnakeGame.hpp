@@ -17,7 +17,8 @@ class SnakeGame {
    private:
     // Process event from keyboard.
     // Such as change direction, pause game, exit game;
-    void processInput(chtype key) {
+    void processInput() {
+        chtype key = gameboard.getInput();
         switch (key) {
             case 'w':
             case KEY_UP:
@@ -77,7 +78,7 @@ class SnakeGame {
         initSnake();
 
         while (!game_over) {
-            processInput(gameboard.getInput());
+            processInput();
             updateState();
             redraw();
             sleep(1);

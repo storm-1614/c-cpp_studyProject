@@ -10,7 +10,6 @@ class Board {
 
    public:
     Board(int height, int weigh) {
-        nodelay(board_win, true);
         this->col = height;
         this->row = weigh;
         initialize();
@@ -18,14 +17,15 @@ class Board {
     Board() {}
 
     void initialize() {
-        keypad(board_win, true);
-        noecho();
-        nodelay(board_win, true);
-        curs_set(0);
         getmaxyx(stdscr, y, x);
         y *= 0.25;
         x *= 0.25;
+
         board_win = newwin(col, row, y, x);
+        keypad(board_win, true);
+        nodelay(board_win, true);
+        noecho();
+        curs_set(0);
         clear();
     }
 
@@ -40,8 +40,5 @@ class Board {
         mvwaddch(board_win, piece.getY(), piece.getX(), piece.getIcon());
     }
 
-    chtype getInput() { 
-        return wgetch(board_win);
-    }
-    void sleep() { wtimeout(board_win, 300); }
+    chtype getInput() { return wgetch(board_win); }
 };
