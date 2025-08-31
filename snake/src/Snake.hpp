@@ -9,7 +9,7 @@
 enum Directon { up = -1, down = 1, left = -2, right = 2 };
 
 // Every Picec of a snake
-class SnakePiece : Drawable {
+class SnakePiece : public Drawable {
    public:
     SnakePiece() {
         this->x = 0;
@@ -27,23 +27,45 @@ class SnakePiece : Drawable {
 class Snake {
    private:
     std::queue<SnakePiece> body;
-    Directon direction; 
+    Directon direction;
 
    public:
     Snake() { direction = right; }
 
-    // Get current direction;
-
+    // Add piece into queue.
     void addNewHead(SnakePiece piece) { body.emplace(piece); }
 
+    // Remove tail data;
     void removeOldTail() { body.pop(); }
 
     chtype getCurrentDirection(Directon newDirection) { return direction; }
+
     void setDirection(Directon newDirection) {
         if (newDirection + direction != 0) direction = newDirection;
     }
 
-    SnakePiece tead() { return body.back(); }
+    SnakePiece head() { return body.back(); }
 
     SnakePiece tail() { return body.front(); }
+
+    SnakePiece SnakePieceNext() {
+        int row = head().getX();
+        int col = head().getY();
+
+        switch (direction) {
+            case up:
+                col--;
+                break;
+            case left:
+                row--;
+                break;
+            case down:
+                col++;
+                break;
+            case right:
+                row++;
+                break;
+        }
+        return SnakePiece(col, row);
+    }
 };

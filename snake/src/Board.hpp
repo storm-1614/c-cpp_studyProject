@@ -26,11 +26,9 @@ class Board {
 
     void clear() { wclear(board); }
 
-    void redraw() {
-        wrefresh(board);
-    }
+    void redraw() { wrefresh(board); }
 
-    void add(Drawable piece){
+    void add(Drawable piece) {
         mvwaddch(board, piece.getY(), piece.getX(), piece.getIcon());
     }
 
