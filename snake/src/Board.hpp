@@ -1,6 +1,8 @@
 #pragma once
 #include <ncurses.h>
 
+#include "Drawable.hpp"
+
 class Board {
    private:
     WINDOW* board;
@@ -26,6 +28,10 @@ class Board {
 
     void redraw() {
         wrefresh(board);
+    }
+
+    void add(Drawable piece){
+        mvwaddch(board, piece.getY(), piece.getX(), piece.getIcon());
     }
 
     chtype getInput() { return wgetch(board); }
