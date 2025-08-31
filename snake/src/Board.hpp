@@ -18,6 +18,7 @@ class Board {
     }
     Board() {}
 
+    //initialize window, config window.
     void initialize() {
         getmaxyx(stdscr, y, x);
         y *= 0.25;
@@ -31,6 +32,7 @@ class Board {
         clear();
     }
 
+    //clear window and redraw boarder.
     void clear() {
         wclear(board_win);
         box(board_win, 0, 0);
@@ -38,6 +40,7 @@ class Board {
 
     void redraw() { wrefresh(board_win); }
 
+    //add element, use class Drawable.
     void add(Drawable piece) {
         mvwaddch(board_win, piece.getY(), piece.getX(), piece.getIcon());
     }
@@ -56,5 +59,6 @@ class Board {
     // Get coordinate character.
     int getChAt(int y, int x) { return mvwinch(board_win, y, x); }
 
-    void sleep() { wtimeout(board_win, 300); }
+    //sleep board_win.
+    void sleep(int time) { wtimeout(board_win, time); }
 };

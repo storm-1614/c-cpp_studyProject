@@ -12,6 +12,7 @@
 
 class SnakeGame {
    private:
+    const int size = 10;
     bool game_over = false;
     Board gameboard;
     Snake snake;
@@ -38,6 +39,13 @@ class SnakeGame {
             case 'd':
             case KEY_RIGHT:
                 snake.setDirection(right);
+                break;
+            case 'p':
+                gameboard.sleep(-1);
+                // detect key, until key is p again;
+                while (gameboard.getInput() == 'p') gameboard.sleep(300);
+                break;
+
             default:
                 break;
         }
@@ -51,18 +59,14 @@ class SnakeGame {
 
         if (apple != NULL) {
             switch (gameboard.getChAt(next.getY(), next.getX())) {
-                case 'A':
-                    delete apple;
-                    apple = NULL;
-                    snake.addNewHead(next);
-                    gameboard.add(snake.head());
-
+                case 'A': {
+                    destoryApple();
+                    addNewHead(next);
                     break;
+                }
 
                 case ' ': {
-                    snake.addNewHead(next);
-                    gameboard.add(snake.head());
-
+                    addNewHead(next);
                     Empty replace(snake.tail().getY(), snake.tail().getX());
                     gameboard.add(replace);
                     snake.removeOldTail();
@@ -73,39 +77,43 @@ class SnakeGame {
                     break;
             }
         }
-        if (apple == NULL) {
-            int y, x;
-            gameboard.getEmptyCoordinate(y, x);
-            apple = new Apple(y, x);
-            gameboard.add(*apple);
-        }
+        if (apple == NULL) createApple();
     }
 
     // Redraw Window
     void redraw() { gameboard.redraw(); }
 
+    // initialize snake body and apple.
     void initall() {
-        snake.addNewHead(SnakePiece(2, 2));
-        gameboard.add(snake.head());
+        addNewHead(SnakePiece(2, 2));
+        addNewHead(snake.SnakePieceNext());
+        addNewHead(snake.SnakePieceNext());
 
-        snake.addNewHead(snake.SnakePieceNext());
-        gameboard.add(snake.head());
+        createApple();
+    }
 
-        snake.setDirection(down);
-        snake.addNewHead(snake.SnakePieceNext());
-        gameboard.add(snake.head());
+    // Add new head to queue and draw into board.
+    void addNewHead(SnakePiece head) {
+        snake.addNewHead(head);
+        gameboard.add(head);
+    }
 
+    void createApple() {
         int y, x;
         gameboard.getEmptyCoordinate(y, x);
         apple = new Apple(y, x);
         gameboard.add(*apple);
     }
 
+    void destoryApple() {
+        delete apple;
+        apple = NULL;
+    }
+
    public:
     // Game loop;
     SnakeGame() {
         srand(time(NULL));
-        int size = 10;
         // draw window
         gameboard = Board(size, size * 2);
 
@@ -115,7 +123,7 @@ class SnakeGame {
             processInput();
             updateState();
             redraw();
-            gameboard.sleep();
+            gameboard.sleep(300);
         }
     }
     ~SnakeGame() { delete apple; }
