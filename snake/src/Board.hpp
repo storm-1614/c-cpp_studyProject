@@ -12,6 +12,9 @@ class Board {
 
    public:
     Board(int height, int weigh) {
+        getmaxyx(stdscr, y, x);
+        y *= 0.25;
+        x *= 0.25;
         this->col = height;
         this->row = weigh;
         initialize();
@@ -20,9 +23,6 @@ class Board {
 
     //initialize window, config window.
     void initialize() {
-        getmaxyx(stdscr, y, x);
-        y *= 0.25;
-        x *= 0.25;
 
         board_win = newwin(col, row, y, x);
         keypad(board_win, true);

@@ -8,13 +8,16 @@
 #include "Apple.hpp"
 #include "Board.hpp"
 #include "Empty.hpp"
+#include "ScoreBoard.hpp"
 #include "Snake.hpp"
 
 class SnakeGame {
    private:
     const int size = 10;
     bool game_over = false;
+    int score = 0;
     Board gameboard;
+    ScoreBoard scoreboard;
     Snake snake;
     Apple* apple;
 
@@ -53,8 +56,6 @@ class SnakeGame {
 
     // Update element.
     void updateState() {
-        gameboard.redraw();
-
         SnakePiece next = snake.SnakePieceNext();
 
         if (apple != NULL) {
@@ -62,6 +63,8 @@ class SnakeGame {
                 case 'A': {
                     destoryApple();
                     addNewHead(next);
+                    score += 10;
+                    scoreboard.refreshScore(score);
                     break;
                 }
 
@@ -81,7 +84,10 @@ class SnakeGame {
     }
 
     // Redraw Window
-    void redraw() { gameboard.redraw(); }
+    void redraw() {
+        gameboard.redraw();
+        scoreboard.redraw();
+    }
 
     // initialize snake body and apple.
     void initall() {
@@ -116,6 +122,8 @@ class SnakeGame {
         srand(time(NULL));
         // draw window
         gameboard = Board(size, size * 2);
+        scoreboard = ScoreBoard(gameboard.getX(), gameboard.getY() + size,
+                                size * 2, score);
 
         initall();
 
