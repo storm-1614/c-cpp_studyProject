@@ -133,6 +133,7 @@ class SnakeGame {
             redraw();
             gameboard.sleep(300);
         }
+        gameboard.gameOver(score);
     }
     ~SnakeGame() { delete apple; }
 };

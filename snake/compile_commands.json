@@ -1,0 +1,14 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-o",
+      "main",
+      "main.cpp"
+    ],
+    "directory": "/data/project/c-cpp_studyProject/snake",
+    "file": "/data/project/c-cpp_studyProject/snake/main.cpp",
+    "output": "/data/project/c-cpp_studyProject/snake/main"
+  }
+]

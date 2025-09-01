@@ -61,4 +61,12 @@ class Board {
 
     //sleep board_win.
     void sleep(int time) { wtimeout(board_win, time); }
+
+    void gameOver(int score){
+        clear();
+        redraw();
+        mvwprintw(board_win, 1, 1, "GameOver!");
+        mvwprintw(board_win, 2, 1, "Score: %d", score);
+        wgetch(board_win);
+    }
 };
