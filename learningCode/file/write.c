@@ -1,25 +1,42 @@
-// This file is an example of write funnction.
+// This file is an example of read.
 
+// 从参数一的文件复制到参数二中
 #include <fcntl.h>
-#include <stdio.h>
 #include <unistd.h>
+#include <stdio.h>
 
-int main(int argc, char *argv[]) {
-    int fileID, temp;
-    // 创建字符串作为缓冲区存储要写入的内容
-    char wbuf[15] = "This is a test!";
-    //打开文件，如果没有就创建一个带读写执行
-    fileID = open(*(argv + 1), O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
-    printf("%d\n", fileID);
-    // write 函数三个参数中:  
-    // fd：文件描述符
-    // buf: 指向写入缓冲区的指针，待写入数据必须存放在该缓冲区内。  
-    // n: 本次要写入数据的字节数
-    temp = write(fileID, wbuf, 15);
-    // write 返回输入了多少字符
-    printf("%d\n", temp);
-    close(fileID);
-    return 0;
+//rw-r--r--
+#define PERMS 0666
+#define MAXSIZE 1024
+
+int main(int argc, char *argv[])
+{
+    int sourcefileID, targetfileID;
+    // readNO: 存储读取的字节数
+    int readNO = 0;
+    char WRbuf[MAXSIZE];
+
+    if (argc != 3){
+        printf("run error\n");
+        return 1;
+    }
+    if ((sourcefileID = open(*(argv + 1), O_RDONLY, PERMS)) == -1){
+        printf("Source file open error\n");
+        return 2;
+    }
+    if ((targetfileID = open(*(argv + 2), O_WRONLY | O_CREAT, PERMS)) == -1){
+        printf("Target file open error\n");
+        return 3;
+    }
+    while ((readNO = read(sourcefileID, WRbuf, MAXSIZE)) > 0) 
+        // write 函数和 read 函数类似
+        if(write(targetfileID, WRbuf, readNO) != readNO){
+            printf("Target file write error!\n");
+            return 4;
+        }
+    close(sourcefileID);
+    close(targetfileID);
 
     return 0;
 }
+
