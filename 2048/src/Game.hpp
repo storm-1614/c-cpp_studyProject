@@ -1,3 +1,6 @@
+#include <iostream>
+#include <ncurses.h>
+
 #include "Board.hpp"
 
 class Game{
@@ -9,8 +12,8 @@ class Game{
     Game(){
         board.randNum();
         board.showBoard();
-        std::cout << "eeee";
-        board.moveLeft();
+        board.moveDown();
+        std::cout << "============\n";
         board.showBoard();
     }
 };

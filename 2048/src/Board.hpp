@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstddef>
 #include <cstdlib>
 #include <ctime>
@@ -21,7 +22,6 @@ class Board {
             }
             std::cout << std::endl;
         }
-        std::cout << "ee";
     }
 
     void randNum() {
@@ -31,7 +31,6 @@ class Board {
     }
 
     void moveLeft() {
-        std::cout << "eeee";
         for (int i = 0; i < size; i++) {
             // 创建新列表
             std::vector<int> row;
@@ -40,33 +39,64 @@ class Board {
                 if (board[i][j] != 0) {
                     row.emplace_back(board[i][j]);
                 }
-                // 合并操作
-                for (int j = 0; j < row.size() - 1; j++) {
-                    if (row[j] == row[j + 1]) {
-                        row[j] *= 2;
-                        row[j + 1] = 0;
-                        j++;
-                    }
-                }
-
-                // 移除合并产生的空格
-                std::vector<int> newRow;
-                for (int j = 0; j < row.size(); j++) {
-                    if (row[j] != 0) {
-                        newRow.emplace_back(row[j]);
-                    }
-                }
-
-                // 填充空格
-                while (newRow.size() < size) {
-                    newRow.emplace_back(0);
-                }
-
-                // 更新棋盘
-                for (int j = 0; j < size; j++) {
-                    board[i][j] = newRow[j];
+            }
+            // 合并操作
+            // TODO: 为什么加一个 (int) 就解决了 code dumped?
+            for (int j = 0; j < (int)row.size() - 1; j++) {
+                if (row[j] == row[j + 1]) {
+                    row[j] *= 2;
+                    row[j + 1] = 0;
+                    j++;
                 }
             }
+
+            std::vector<int> newRow;
+            for (int j = 0; j < (int)row.size(); j++) {
+                if (row[j] != 0) {
+                    newRow.emplace_back(row[j]);
+                }
+            }
+
+            // 填充空格
+            while ((int)newRow.size() < size) {
+                newRow.emplace_back(0);
+            }
+
+            // 更新棋盘
+            for (int j = 0; j < size; j++) {
+                board[i][j] = newRow[j];
+            }
         }
+    }
+
+    void moveRight() {
+        for (int i = 0; i < size; i++) {
+            std::reverse(board.at(i).begin(), board.at(i).end());
+        }
+
+        moveLeft();
+
+        for (int i = 0; i < size; i++) {
+            std::reverse(board.at(i).begin(), board.at(i).end());
+        }
+    }
+
+    void transposeMatrix(){
+        for (int i = 0; i < size; i++){
+            for (int j = i + 1; j < size; j++){
+                std::swap(board[i][j], board[j][i]);
+            }
+        }
+    }
+    void moveUp(){
+        transposeMatrix();
+        moveLeft();
+        transposeMatrix();
+    }
+
+    void moveDown(){
+        transposeMatrix();
+        moveRight();
+        transposeMatrix();
     }
 };
