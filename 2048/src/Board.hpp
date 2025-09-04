@@ -1,3 +1,5 @@
+#include <ncurses.h>
+
 #include <algorithm>
 #include <cstddef>
 #include <cstdlib>
@@ -10,6 +12,14 @@ class Board {
     std::vector<std::vector<int>> board = {
         {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}};
 
+    void transposeMatrix() {
+        for (int i = 0; i < size; i++) {
+            for (int j = i + 1; j < size; j++) {
+                std::swap(board[i][j], board[j][i]);
+            }
+        }
+    }
+
    public:
     Board() { srand(time(NULL)); }
 
@@ -18,12 +28,13 @@ class Board {
     void showBoard() {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                std::cout << board.at(i).at(j) << "\t";
+                printw("%d\t", board[i][j]);
             }
-            std::cout << std::endl;
+            printw("\n");
         }
     }
 
+    //WARN: 后期死循环占用过大
     void randNum() {
         int x, y;
         while (board[x = rand() % size][y = rand() % size] != 0);
@@ -81,22 +92,17 @@ class Board {
         }
     }
 
-    void transposeMatrix(){
-        for (int i = 0; i < size; i++){
-            for (int j = i + 1; j < size; j++){
-                std::swap(board[i][j], board[j][i]);
-            }
-        }
-    }
-    void moveUp(){
+    void moveUp() {
         transposeMatrix();
         moveLeft();
         transposeMatrix();
     }
 
-    void moveDown(){
+    void moveDown() {
         transposeMatrix();
         moveRight();
         transposeMatrix();
     }
+
+
 };
