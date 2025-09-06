@@ -1,6 +1,5 @@
 #include <ncurses.h>
 
-#include <iostream>
 
 #include "Board.hpp"
 
