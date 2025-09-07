@@ -1,0 +1,30 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++17",
+      "-Iinclude",
+      "-o",
+      "fmgr",
+      "src/main.cpp"
+    ],
+    "directory": "/data/project/fmgr",
+    "file": "/data/project/fmgr/src/main.cpp",
+    "output": "/data/project/fmgr/fmgr"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++17",
+      "-Iinclude",
+      "-o",
+      "fmgr",
+      "src/file_ops.cpp"
+    ],
+    "directory": "/data/project/fmgr",
+    "file": "/data/project/fmgr/src/file_ops.cpp",
+    "output": "/data/project/fmgr/fmgr"
+  }
+]
