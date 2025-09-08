@@ -1,10 +1,12 @@
-//使用fwrite() 和 fread() 函数对 stud.bin 文件进行写入和读取操作
-//
-//程序定义了两个结构体数组 stud 和 stud1，并对 stud 进行了初始化。以读写方式新建并打开二进制文件 stud.bin。
-//利用 for 循环语句把初始化过的结构体数组 stud 中的数据写入文件 stud.bin 中，
-//写数据结束后文件指针之后文件指针指向文件的结尾处。由于后面还要从文件中读取数据，所以需要使用 rewind() 重置文件指针于文件开头处
-//最后利用 while 语句把文件 stud.bin 中的数据写入结构体数组 stud1 中，并在屏幕上输出
+/*
+使用fwrite() 和 fread() 函数对 stud.bin 文件进行写入和读取操作
 
+程序定义了两个结构体数组 stud 和 stud1，并对 stud 进行了初始化。以读写方式新建并打开二进制文件 stud.bin。
+利用 for 循环语句把初始化过的结构体数组 stud 中的数据写入文件 stud.bin 中，
+写数据结束后文件指针之后文件指针指向文件的结尾处。
+由于后面还要从文件中读取数据，所以需要使用 rewind() 重置文件指针于文件开头处
+最后利用 while 语句把文件 stud.bin 中的数据写入结构体数组 stud1 中，并在屏幕上输出
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,7 +22,7 @@ int main(int argc, char *argv[]) {
       stud1[5];
 
     int i;
-    // 以读写方式新建并打开文件 stud.binn 测试是否成功
+    // 以读写方式新建并打开文件 stud.bin 测试是否成功
     if ((fp = fopen("stud.bin", "wb+")) == 0) {
         printf("不能打开文件\n");
         exit(0);
