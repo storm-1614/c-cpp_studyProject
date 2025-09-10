@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <cstdlib>
 #include <ctime>
+#include <utility>
 #include <vector>
 
 class Board {
@@ -33,11 +34,24 @@ class Board {
         }
     }
 
-    //WARN: 后期死循环占用过大
     void randNum() {
         int x, y;
-        while (board[x = rand() % size][y = rand() % size] != 0);
-        board[x][y] = 2;
+        std::pair<int, int> coordinate;
+        std::vector<std::pair<int, int>> voidList;
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (board[i][j] == 0) voidList.emplace_back(i, j);
+            }
+        }
+
+        if (!voidList.empty()) {
+            coordinate = voidList[rand() % voidList.size()];
+
+            x = coordinate.first;
+            y = coordinate.second;
+
+            board[x][y] = 2;
+        }
     }
 
     void moveLeft() {
@@ -51,7 +65,6 @@ class Board {
                 }
             }
             // 合并操作
-            // TODO: 为什么加一个 (int) 就解决了 code dumped?
             for (int j = 0; j < (int)row.size() - 1; j++) {
                 if (row[j] == row[j + 1]) {
                     row[j] *= 2;
@@ -102,6 +115,4 @@ class Board {
         moveRight();
         transposeMatrix();
     }
-
-
 };
