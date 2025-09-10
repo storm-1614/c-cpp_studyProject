@@ -35,9 +35,13 @@ class Board {
     }
 
     bool randNum() {
-        int x, y;
+        int x, y, num;
         std::pair<int, int> coordinate;
         std::vector<std::pair<int, int>> voidList;
+        
+        if ((double)rand() / RAND_MAX < 0.5) num = 2;
+        else num = 4;
+
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 if (board[i][j] == 0) voidList.emplace_back(i, j);
@@ -50,7 +54,7 @@ class Board {
             x = coordinate.first;
             y = coordinate.second;
 
-            board[x][y] = 2;
+            board[x][y] = num;
             return true;
         } else
             return false;

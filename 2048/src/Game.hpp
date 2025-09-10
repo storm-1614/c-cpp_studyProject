@@ -1,6 +1,6 @@
 #include <ncurses.h>
 
-
+#include "GameOver.hpp"
 #include "Board.hpp"
 
 class Game {
@@ -19,7 +19,7 @@ class Game {
             getInput();
             refresh();
         }
-
+        GameOver over;
         getch();
         endwin();
     }
