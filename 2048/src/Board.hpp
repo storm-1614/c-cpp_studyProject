@@ -34,7 +34,7 @@ class Board {
         }
     }
 
-    void randNum() {
+    bool randNum() {
         int x, y;
         std::pair<int, int> coordinate;
         std::vector<std::pair<int, int>> voidList;
@@ -51,7 +51,9 @@ class Board {
             y = coordinate.second;
 
             board[x][y] = 2;
-        }
+            return true;
+        } else
+            return false;
     }
 
     void moveLeft() {
@@ -114,5 +116,24 @@ class Board {
         transposeMatrix();
         moveRight();
         transposeMatrix();
+    }
+
+    bool gameOver(bool empty) {
+        if (!empty){
+            // hoeizontal traversal
+            for (int i = 0; i < size; i++){
+                for (int j = 0; j < size - 1; j++){
+                    if (board[i][j] == board[i][j + 1]) return false;
+                }
+            }
+            // vertical traversal
+            for (int i = 0; i < size - 1; i++){
+                for (int j = 0; j < size; j++){
+                    if (board[i][j] == board[i+1][j]) return false;
+                }
+            }
+            return true;
+        } 
+        return false;
     }
 };

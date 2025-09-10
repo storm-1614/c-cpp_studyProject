@@ -14,7 +14,7 @@ class Game {
         noecho();
         while (!gameOver) {
             clear();
-            board.randNum();
+            gameOver = board.gameOver(board.randNum());
             board.showBoard();
             getInput();
             refresh();
