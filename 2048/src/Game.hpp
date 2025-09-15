@@ -12,6 +12,7 @@ class Game {
     Game() {
         initscr();
         noecho();
+        curs_set(0);
         while (!gameOver) {
             clear();
             gameOver = board.gameOver(board.randNum());

@@ -14,21 +14,18 @@ void printHelp() {
 int main(int argc, char* argv[]) {
     try {
         fmgr f;
-        std::string command;
+        std::string command = " ";
         std::cout << f.current_path() << std::endl;
         while (!command.empty()) {
-        
+            printHelp();
+            std::cout << "输入命令: ";
+            std::cin >> command;
+            if (command == "ls") {
+                f.list_directory(f.current_path());
+            } else if (command == "quit") {
+                return 0;
+            }
         }
-        printHelp();
-        std::cout << "输入命令: ";
-        std::cin >> command;
-        if (command == "ls"){
-            f.list_directory(".");
-        }
-        else if(command == "quit"){
-            return 1;
-        }
-        
     }
 
     catch (std::runtime_error& e) {

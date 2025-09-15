@@ -34,20 +34,28 @@ class Board {
         }
     }
 
+    // 随机选择一个空白位置生成 2 或 4
+    // 返回值为是否生成了数字，也就是是否包含空白位置
     bool randNum() {
-        int x, y, num;
+        int x, y;  // coordinate
+        int num;   // store random number
         std::pair<int, int> coordinate;
         std::vector<std::pair<int, int>> voidList;
-        
-        if ((double)rand() / RAND_MAX < 0.5) num = 2;
-        else num = 4;
 
+        // random number 2 or 4
+        if ((double)rand() / RAND_MAX < 0.1)
+            num = 4;
+        else
+            num = 2;
+
+        // add 0 coorinate to voidList
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 if (board[i][j] == 0) voidList.emplace_back(i, j);
             }
         }
 
+        // randomly select an element
         if (!voidList.empty()) {
             coordinate = voidList[rand() % voidList.size()];
 
@@ -122,22 +130,25 @@ class Board {
         transposeMatrix();
     }
 
+    // 判断是否游戏结束
+    // 输入 randNum() 函数
+    // 输出值给 gameover 布尔变量判断是否还进行循环
     bool gameOver(bool empty) {
-        if (!empty){
+        if (!empty) {
             // hoeizontal traversal
-            for (int i = 0; i < size; i++){
-                for (int j = 0; j < size - 1; j++){
+            for (int i = 0; i < size; i++) {
+                for (int j = 0; j < size - 1; j++) {
                     if (board[i][j] == board[i][j + 1]) return false;
                 }
             }
             // vertical traversal
-            for (int i = 0; i < size - 1; i++){
-                for (int j = 0; j < size; j++){
-                    if (board[i][j] == board[i+1][j]) return false;
+            for (int i = 0; i < size - 1; i++) {
+                for (int j = 0; j < size; j++) {
+                    if (board[i][j] == board[i + 1][j]) return false;
                 }
             }
             return true;
-        } 
+        }
         return false;
     }
 };
