@@ -204,7 +204,9 @@ int main(int argc, char* args[]) {
             // The quit flag
             bool quit{false};
             // The event data
-            // TODO: SDL_EVENT 查询
+            
+            // SDL_Event 是一个联合体
+        
             SDL_Event e;
             SDL_zero(e);
 
