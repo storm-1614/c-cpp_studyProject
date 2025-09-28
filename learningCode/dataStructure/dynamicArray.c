@@ -1,3 +1,10 @@
+/*
+* storm-1614
+* 2025-09-26
+* Dynamic Array
+*/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 
