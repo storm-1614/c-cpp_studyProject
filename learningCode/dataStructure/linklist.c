@@ -3,13 +3,11 @@
 
 // 链表结构声明
 // linknode 是动态指针结构
-struct linknode {
+typedef struct linknode {
     int data;               // 存储结点数据
     struct linknode* next;  // 指向下一个结点
-};
+} LinkNode;
 
-// 定义新类型
-typedef struct linknode LinkNode;
 
 // 链表的创建
 LinkNode* CreatLinkNode() {
