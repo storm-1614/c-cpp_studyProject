@@ -30,14 +30,15 @@ void createListR(DblList &first, DataType A[], int m)
         // 新结点赋值
         s->data = A[i];
         s->freq = 0;
-        // 前趋方向链接
+        // 前趋方向链接  
+
         q = r->rLink;
-        s->lLink = r;
-        q->lLink = s;
+        s->lLink = r; // s 的左指针是 r
+        q->lLink = s; // q 的左指针是 s
         // 后继方向链接
-        r->rLink = s;
-        s->rLink = q;
-        r = s;
+        r->rLink = s; // r 的右指针是 s
+        s->rLink = q; // s 的右指针是 q
+        r = s;   // r 前移到新的结点
     }
 }
 
@@ -86,6 +87,54 @@ DblNode *Locate(DblList &first, int i, int d)
         else
             p = (d == 0) ? p->lLink : p->rLink;
     return (p != first) ? p : NULL; // 返回查找结果
+}
+
+// 建立一个包含值 x 的新结点，并将其按 d 指定的方向插入到第 i 个结点的位置
+int Insert(DblList &first, int i, DataType x, int d)
+{
+    DblNode *p = Locate(first, i - 1, d);
+    if (p == NULL)
+        return 0;
+
+    DblNode *s = (DblNode *)malloc(sizeof(DblNode));
+    s->data = x;
+
+    if (d == 0)
+    // 在前趋方向插入
+    {
+        // 前趋链
+        s->lLink = p->lLink;
+        p->lLink = s;
+        // 后继链
+        s->lLink->rLink = s;
+        s->rLink = p;
+    }
+    else
+    // 在后继方向输入
+    {
+        // 后继链
+        s->rLink = p->rLink;
+        p->rLink = s;
+        // 前趋链
+        s->rLink->lLink = s;
+        s->lLink = p;
+    }
+    return 1; // 插入成功
+}
+
+// 在带头结点的循环双链表中按照 d 所指方向删除第 i 个结点
+// 被删元素的值通过引用参数 x 返回，如果删除成功，则函数返回 1 ，否则函数返回 0
+int Remove(DblList &first, int i, DataType &x, int d)
+{
+    DblNode *p = Locate(first, i, d); // 按 d 所指方向定位于第 i 个结点
+
+    if (p == NULL) // 空表或 i 不合理，删除失败
+        return 0;
+    p->rLink->lLink = p->lLink; // 从 lLink 链中摘下
+    p->lLink->rLink = p->rLink; // 从 rLink 链中摘下
+    x = p->data;
+    free(p);  // 删除
+    return 1; // 删除成功
 }
 
 int main(int argc, char *argv[])
