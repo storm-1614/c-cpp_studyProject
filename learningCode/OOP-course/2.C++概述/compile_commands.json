@@ -1,0 +1,15 @@
+[
+  {
+    "file": "damo.cpp",
+    "arguments": [
+      "g++",
+      "damo.cpp",
+      "-o",
+      "damo",
+      "-g",
+      "-std=c++23"
+    ],
+    "directory": "/data/project/c-cpp_studyProject/learningCode/OOP-course/2.C++概述",
+    "output": "damo"
+  }
+]
