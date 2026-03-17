@@ -27,4 +27,5 @@ int main(int argc, char *argv[])
 {
     char * const name = "chen";
     name[3] = 'a';  // 段错误
+    const a = 1;
 }

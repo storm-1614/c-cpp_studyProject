@@ -1,0 +1,77 @@
+2,3c2,3
+<  * 学生信息管理系统
+<  * 2026-03-16 21:30
+---
+>  * 学生信息管理系统（简陋版）
+>  * 2026-03-10 13:56
+7a8
+> #include <cstdlib>
+107c108
+<     student_info_list(int capacity, const std::string path) : data_path(path)
+---
+>     student_info_list(const std::string path) : data_path(path)
+109c110
+<         list = load_from_csv(capacity, data_path);
+---
+>         list = load_from_csv(data_path);
+128,139d128
+<     int find_number(double score)
+<     {
+<         for (int i = 0; i < list.size(); i++)
+<         {
+<             if (score == list[i].info.admission_score)
+<             {
+<                 return i;
+<             }
+<         }
+<         return -1;
+<     }
+< 
+195c184
+<     std::vector<Student> load_from_csv(int c, std::string path)
+---
+>     std::vector<Student> load_from_csv(std::string path)
+200c189
+<         std::vector<Student> data(c);
+---
+>         std::vector<Student> data;
+241,249c230
+<     int capacity;
+<     std::cout << "输入学生数量：";
+<     std::cin >> capacity;
+<     student_info_list info(capacity, "./data.csv");
+<     std::cout << "录入学生：";
+<     for (int i = 0; i < capacity; i++)
+<     {
+<         info.addStudent();
+<     }
+---
+>     student_info_list info("./data.csv");
+252d232
+< 
+271,274d250
+< 
+<             int type;
+<             std::cout << "请输入数据类型（1.学号， 2. 成绩）:";
+<             std::cin >> type;
+277,281c253,254
+<             switch (type)
+<             {
+<             case 1: {
+<                 std::cout << "输入要查找的学号：";
+<                 std::cin >> input;
+---
+>             std::cout << "输入要查找的学号：";
+>             std::cin >> input;
+283,291c256
+<                 std::cout << info.find_number(input) << std::endl;
+<             }
+<             case 2: {
+<                 std::cout << "输入要查找的成绩：";
+<                 std::cin >> input;
+< 
+<                 std::cout << info.find_number(stod(input)) << std::endl;
+<             }
+<             }
+---
+>             std::cout << info.find_number(input) << std::endl;
