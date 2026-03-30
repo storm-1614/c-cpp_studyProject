@@ -352,16 +352,377 @@ void fun(int x, int y)
 int mul(int x, int y);
 int mul(double x, double y);
 ```
-返回值类型不同的函数重载  
-``` cpp
-int mul(int x, int y);
-double mul(int x, int y);
 
-```
 参数个数不同的函数重载  
 ``` cpp
 double mul(double x, double y);
 double mul(double x, double y, double z);
 ```
-## 作用域运算符 `::`
 
+**调用重载函数时，函数返回值不在参数匹配检查**   
+
+函数重载与带默认值一起使用时，**有可能引起二义性**。  
+```  cpp
+void DrawCircle(int r = 0, int x = 0, int y = 0);
+void DrawCircle(int r);
+
+// 当执行以下函数时：
+DrawCircle(20);
+// 编译系统无法确认调用哪个函数
+```
+
+![](1.png)
+
+```cpp
+void f_a(int x);
+void f_a(long x);
+
+// 当执行以下的函数时：
+f_a(5.56); // 编译不通过
+//  编译器无法确定将 5.56 转换为 long 还是 int
+```
+## 作用域运算符 `::`
+如果两个变量同名，一个全局的，一个局部的，那么局部变量在其作用域内具有较高的优先级。  
+如果需要在函数内访问全局变量是，可以用作用域运算符`::` 使用全局变量。  
+
+``` cpp
+int a = 10;
+int main(int argc, char *argv[])
+{
+    int a = 20;
+    std::cout << a << std::endl;
+    std::cout << ::a << std::endl;
+
+    return 0;
+}
+```
+输出：  
+20  
+10  
+
+访问命名空间的内容：  
+``` cpp
+#include <iostream>
+std::cout << " " << std::endl;
+```
+
+自己的 namespace 
+``` cpp
+#include <iostream>
+
+namespace A
+{
+int num = 10;
+void show()
+{
+    std::cout << "namespace A" << std::endl;
+}
+} // namespace A
+namespace B
+{
+int num = 20;
+void show()
+{
+    std::cout << "namespace B" << std::endl;
+}
+} // namespace B
+
+using namespace A;
+int main(int argc, char *argv[])
+{
+    A::show();
+    std::cout << A::num << std::endl;
+    B::show();
+    std::cout << B::num << std::endl;
+    show();
+    std::cout << num << std::endl;
+
+    return 0;
+}
+```
+
+输出：
+```
+namespace A
+10
+namespace B
+20
+namespace A
+10
+```
+
+## 无名联合
+
+
+## 强制类型转换
+在 C :
+``` cpp
+int i = 10;
+float x = (float)i;
+```
+在 C++
+``` cpp
+int i = 10;
+float x = float(i);
+```
+
+`static_cast` :  
+``` cpp
+float y = static_cast<float>(i);
+```
+
+## `new` 和 `delete` 运算符
+在 C 语言： 
+``` c
+int *p;
+p = (int *)malloc(sizeof(int));
+free(p);
+```
+在 C++:
+``` cpp
+int *p;
+p = new int;
+delete p;
+```
+
+`new` 分配, `delete` 释放  
+new 能够自动返回正确的指针类型，不必对返回指针进行类型转换，new 可以自动计算要分配的内存类型大小，不需要使用  `sizeof()` 来计算所要的字节数。  
+
+格式：
+``` cpp
+// type 为类型名，可以说基本类型，也可以是用户定义的类型，包括类
+type *p = new type;
+delete p;
+```
+
+使用 new 为动态数组分配内存空间:    
+```cpp
+type *p = new type[size];
+```
+size 可以是具体的数值，变量，有运算符的表达式。  
+
+
+delete 释放动态分配的数据存储区。  
+``` cpp
+delete[] 指针变量名
+```
+方括号是数组的时候用。  
+例：  
+``` cpp
+float *p = new float[5];
+delete [] p;
+```
+new 和 delete 要配对使用  
+
+```
+p = new type[size][m][n]...[s];
+```
+
+> 书本勘误：  
+> ``` cpp
+> int *pi = new int[2][3][4];
+> ```
+> ![](2.png)
+
+
+应该：
+
+```cpp
+int (*p1)[4] = new int[size][4];
+```
+分配二维数组：  
+``` cpp
+int size;
+std::cin >> size;
+int (*pi)[4] = new int[size][4];
+delete[] pi;
+```
+
+在 C 语言用一维数组模拟二维数组：  
+``` cpp
+int rows = 3;
+int cols = 4;
+
+// c 语言：用一维数组模拟二维数组
+int *p1 = (int *)malloc(rows * cols * sizeof(int));
+for (int i = 0; i < rows; i++)
+{
+    for (int j = 0; j < cols; j++)
+    {
+
+        p1[i * cols + j] = i * cols + j;
+    }
+}
+
+for (int i = 0; i < rows; i++)
+{
+    for (int j = 0; j < cols; j++)
+    {
+        std::cout << p1[i * cols + j] << "\t";
+    }
+     std::cout << std::endl;
+}
+
+return 0;
+```
+输出：  
+```
+0       1       2       3
+4       5       6       7
+8       9       10      11
+```
+
+c++ ：用一维数组模拟二维数组  
+``` cpp
+// c++ ：用一维数组模拟二维数组
+int *p2 = new int [rows * cols];
+for (int i = 0; i < rows; i++)
+{
+    for (int j = 0; j < cols; j++)
+    {
+
+        p1[i * cols + j] = (i * cols + j) * (-1);
+    }
+}
+
+for (int i = 0; i < rows; i++)
+{
+    for (int j = 0; j < cols; j++)
+    {
+        std::cout << p1[i * cols + j] << "\t";
+    }
+     std::cout << std::endl;
+}
+delete[] p2;
+```
+
+指向指针的指针，二维数组：  
+``` c
+// C 
+int **arr1 = (int **)malloc(rows *sizeof(int *));
+
+for (int i = 0; i < rows; i++)
+{
+    arr1[i] = (int *)malloc(cols * sizeof(int));
+}
+
+for (int i = 0; i < rows; i++)
+{
+    for (int j = 0; j < cols; j++)
+    {
+        arr1[i][j] = (i * cols + j) * 2;
+    }
+}
+for (int i = 0; i < rows; i++)
+{
+    for (int j = 0; j < cols; j++)
+    {
+        std::cout << arr1[i][j] << "\t";
+    }
+     std::cout << std::endl;
+}
+```
+图例：
+![](3.png)
+
+好处：  
+数组可以不一样长：  
+
+![](4.png)
+
+释放空间很麻烦，要 free 好多好多……  
+因为空间不连续，速度慢些。  
+C++ 同理:
+```cpp
+    // C++
+    int **arr2 = new int *[rows];
+
+    for (int i = 0; i < rows; i++)
+    {
+        arr1[i] = new int[cols];
+    }
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            arr1[i][j] = (i * cols + j) * -2;
+        }
+    }
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            std::cout << arr1[i][j] << "\t";
+        }
+         std::cout << std::endl;
+    }
+```
+和上面一样。  
+
+连续内存空间：
+``` cpp
+    int (*p0)[4] = new int[rows][4];
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            p0[i][j] = i * 4 + j;
+        }
+    }
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            std::cout << p0[i][j] << "\t";
+        }
+        std::cout << std::endl;
+    }
+
+```
+列数是个常数 4 ，不能改变。  
+好处：空间连续，访问速度快。  
+![](5.png)
+区别：
+``` cpp
+int *arr[4]; // 指针数组
+int (*p0)[4]; // 指向数组的指针
+```
+
+用 new 分配内存的同时可以用 () 指定其初始值。  
+只能给单个元素，不能给数组。  
+``` cpp
+int *p = new int(99);
+```
+
+对动态分配是否成功进行检查：  
+``` cpp
+int *p;
+p = new int;
+if (!p)
+{
+    exit(1);
+}
+*p = 20;
+std::cout << *p << std::endl;
+delete p;
+```
+
+非常大的数组不抛出异常：  
+``` cpp
+p = new (std::nothrow) int[1000000000000000000000];
+```
+
+对指针做位移，释放错误。  
+``` cpp
+    int *p = new int[3];
+    p = p + 2;
+    delete []p;
+```
+报错：  
+![](6.png)  
+
+
+## 引用
