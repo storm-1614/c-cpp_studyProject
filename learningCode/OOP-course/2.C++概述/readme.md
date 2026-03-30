@@ -726,3 +726,153 @@ p = new (std::nothrow) int[1000000000000000000000];
 
 
 ## 引用
+引用给一个变量起别名。对引用的任何操作都是对引用目标的操作。  
+``` cpp
+类型 &引用名 = 被引用目标的名字;
+```
+例：  
+``` cpp
+int i = 5;
+int &j = 1; // 声明 j 是一个整型变量的引用
+```
+
+特点：  
+1. 类型必须匹配  
+2. 引用必须在声明是初始化，不能重新绑定  
+3. 引用就是别引用对象的别名，**不额外占据内存**。和被引用的目标共同占有内存。  
+
+如果引用不是用作函数的参数或返回值，在说明时必须进行初始化。  
+为引用提供的初始值，可以说一个变量或另一个引用。  
+
+引用仅在声明时带有引用运算符 `&`，以后就像普通变量一样引用，不能再带 `&`  
+在表达式中使用的 `&` 都是地址符。  
+
+``` cpp
+int num = 50;
+int &ref = num; // 引用符
+int *p = &ref; // 地址符
+```
+
+``` cpp
+int j = 5, k = 3;
+int &i = j; // 声明引用 i，& 为引用符
+i = k; // WARN: 把 k 赋值给 i
+int *pi = &i; // & 为地址符
+std::cout << *pi;
+```
+输出： 3
+
+
+### 并不是任何类型的数据都可以引用
+```cpp
+void &r = 10;    // 不能建立 void 类型的引用
+
+int a[4] = {1, 2, 3, 4}; 
+int &ra[4] = a;  // 不能建立引用的数组
+```
+
+- 不能建立 void 类型的引用  
+引用的右值不能是常量:  
+``` cpp
+int &r = 10; // 不能
+```
+总不能 `10++` 吧？？  
+应该要加 const
+``` cpp
+const int &r = 10;
+```
+也可以右值引用：  
+``` cpp
+int &&r2 = 10;
+r2++; // 此时：r2 = 11
+```
+
+- 不能建立引用的数组：  
+
+``` cpp
+int a[4] = {1, 2, 3, 4};
+int &ra[4] = a; // 不能
+// 从变量开始往外读，按照优先级：先读到[]  
+// ra 是个数组，每个元素都是引用。
+```
+
+没办法建立一个数组，里面都是引用  
+``` cpp
+int x = 1, y = 2, z = 3, w = 4;
+int &ra[4] = {x, y, z, w};
+```
+
+指向数组的引用应该这样写：  
+加上括号，改变优先级  
+``` cpp
+int a[4] = {1, 2, 3, 4};
+int (&ra)[4] = a; 
+```
+
+- 不能建立引用的引用，不能建立指向引用的指针。  
+
+``` cpp
+int n = 3;
+int &&r = n;  // 不能
+int &*p = n; // 不能  从变量开始往外读，
+// 先遇到 * ,所以 p 是个指针，
+// 再往外是个应用，所以是指向引用的指针
+// 但是不能建立一个指向引用的指针
+```
+
+下面可以。指向指针的引用
+``` cpp
+int n = 3;
+int *ptr = &n;
+int *&p1 = ptr; // 指针的引用
+```
+
+### 引用作为函数参数
+
+``` cpp
+#include <iostream>
+
+void swap(int &a, int &b)
+{
+    int tmp = a;
+    a = b;
+    b = tmp;
+}
+int main(int argc, char *argv[])
+{
+    int x = 4, y = 5;
+    std::cout << "x = " << x << "; y = " << y << std::endl;
+    swap(x, y);
+    std::cout << "x = " << x << "; y = " << y << std::endl;
+    return 0;
+}
+```
+
+### 返回函数值是引用  
+允许我们修改函数返回值。  
+``` cpp
+// Function returns a reference to an element in the array
+int& getElement(int arr[], int index) {
+    return arr[index];
+}
+
+int main() {
+    int numbers[5] = {10, 20, 30, 40, 50};
+
+    // Use reference return to modify the array
+    getElement(numbers, 2) = 99;
+
+    // Print the array to see the change
+    for (int i = 0; i < 5; ++i) {
+        cout << numbers[i] << " ";
+    }
+    cout << endl;
+    return 0;
+}
+
+// 返回值是可以被修改的
+int& max(int& num1, int& num2)
+{
+    return (num1 > num2) ? num1 : num2;
+}
+```
