@@ -268,11 +268,230 @@ class A{
   public:
     A();
     A(int);
-    A(int, double);
+    A(int, char);
+    A(float, char);
+};
+
+int main()
+{
+    A x;
+    A y(2);
+    A z(10, 'z');
+    A w(4.4, 'w');
+}
+```
+无参构造函数创建对象时用 `Data a;` 不能用 `Data a();`(其与函数声明类似)  
+可以定义带默认参数的构造函数。  
+
+## 析构函数
+特殊成员函数，与构造函数相反，执行清理的任务。  
+和类名相同的函数前面加上 `~`  
+``` cpp
+class Complex
+{
+    Complex()
+    {
+    }
+    ~Complex()
+    {
+    }
 };
 ```
-## 对象组和对象指针
+析构函数没有参数，一个类只能有一个析构函数。  
+若没有显式定义，编译系统会自动生成一个默认的空白析构函数。它能够释放对象所占用的内存空间。   
+
+- 用运算符 new 在构造函数中分配的内存空间，需用 delete 在析构函数中释放，不然会内存泄漏。  
+
+如果一个对象的生命周期结束时，该对象将释放，析构函数就会被自动调用。  
+用 new 创建的对象，在用 delete 运算符释放时，delete 会自动调用析构函数。  
+如果没有用 delete ，程序运行结束都不会调用析构函数。  
+
+## 对象数组和对象指针
+### 对象数组
+C++ 对象数组是由同一类的多个对象组成的数组。就像 int、double 等基本类型可以组成数组一样，类类型也可以组成对象数组。对象数组的每个元素都是该类的一个对象，数组会自动调用类的构造函数为每个对象初始化。
+
+#### 示例
+
+假设有一个简单的类 `Student`：
+
+```cpp
+class Student {
+private:
+    int id;
+    std::string name;
+public:
+    Student(int i, std::string n) : id(i), name(n) {}
+    void show() {
+        std::cout << "ID: " << id << ", Name: " << name << std::endl;
+    }
+};
+```
+
+定义对象数组并初始化：
+
+```cpp
+Student students[3] = {
+    Student(1, "Tom"),
+    Student(2, "Jerry"),
+    Student(3, "Alice")
+};
+
+for(int i = 0; i < 3; ++i) {
+    students[i].show();
+}
+```
+
+**说明：**
+- 数组 `students` 包含 3 个 `Student` 对象。
+- 创建数组时，会分别调用构造函数初始化每个对象。
+- 可以像普通数组一样通过下标访问每个对象，并调用其成员函数。
+
+如果类有默认构造函数，也可以这样定义：  
+
+```cpp
+Student students[5]; // 5个Student对象，调用默认构造函数
+```
+
+**注意事项：**
+- 如果类没有默认构造函数，必须用上面第一种方式初始化对象数组。  
+- 对象数组常用于需要管理多个同类对象的场景，比如班级学生、商品列表等。  
+
+### 对象指针
+C++ 对象指针是指向类对象的指针变量。通过对象指针可以访问对象的成员（用 -> 运算符），也可以动态创建对象数组。
+
+#### 示例
+
+假设有如下类：
+
+```cpp
+class Student {
+public:
+    int id;
+    std::string name;
+    void show() {
+        std::cout << "ID: " << id << ", Name: " << name << std::endl;
+    }
+};
+```
+
+- 1. 对象指针的基本用法
+
+```cpp
+Student s(1, "Tom");
+Student* p = &s; // p是指向对象s的指针
+p->show();       // 通过指针访问成员
+```
+
+- 2. 动态创建对象
+
+```cpp
+Student* p = new Student{2, "Jerry"};
+p->show();
+delete p; // 用完后释放内存
+```
+
+- 3. 动态创建对象数组
+
+```cpp
+Student* arr = new Student[3]; // 创建3个Student对象
+arr[0].id = 1; arr[0].name = "Tom";
+arr[1].id = 2; arr[1].name = "Jerry";
+arr[2].id = 3; arr[2].name = "Alice";
+
+for(int i = 0; i < 3; ++i) {
+    arr[i].show();
+}
+delete[] arr; // 释放数组
+```
+
+注意：  
+``` cpp
+Complex *p = new Complex[2]{{1.1, 2.2}, {3.3, 4.4}};
+p[1].show();// 不能用 p[1]->show();
+```
+
+**总结：**
+- 对象指针可以指向单个对象或对象数组。
+- 通过对象指针可以访问对象成员。
+- 用 new 创建的对象（数组）需要手动 delete（delete[]）释放内存。
+
+### this 指针
+> 对象只包含数据成员，不包含成员函数(用 sizeof 证明)  
+
+在 C++ 中，this 指针是类的每个成员函数内部都隐含的一个指针，指向调用该成员函数的对象本身。
+
+#### 作用
+- 访问当前对象的成员变量和成员函数。
+- 区分成员变量和同名的参数或局部变量。
+- 支持链式调用（返回 *this）。
+
+#### 示例
+
+```cpp
+class Student {
+private:
+    int id;
+public:
+    void setId(int id) {
+        this->id = id; // this->id 表示成员变量，id 表示参数
+    }
+    Student& setAndReturn(int id) {
+        this->id = id;
+        return *this; // 返回当前对象的引用
+    }
+};
+```
+
+#### 说明
+- 在成员函数内部，this 是一个指向当前对象的指针，类型为 `Student*`。
+- 通过 `this->成员名` 明确表示访问成员变量。
+- 可以用 `return *this;` 实现链式调用。
+
+**注意：**  
+静态成员函数没有 this 指针，因为它们不属于任何对象。
 
 ## string 类
+c 语言 string.h 的栈溢出风险：  
+``` cpp
+#include <string.h>
+#include <iostream>
+
+struct test{
+    int x;
+    char a[4];
+    int y;
+    char b[4];
+    int z;
+};
+
+int main(int argc, char *argv[])
+{
+    test t1{1, "abc", 1, "xyz", 1};
+    std::cout << t1.x << " " << t1.y << " " << t1.z << std::endl;
+    strcat(t1.a, t1.b);
+    std::cout << t1.a << std::endl;
+    std::cout << t1.x << " " << t1.y << " " << t1.z << std::endl;
+
+    return 0;
+}
+```
+
+string 的类运算符
+| 运算符         | 作用描述                         | 示例                          |
+|:--------------|:--------------------------------|:-----------------------------|
+| =             | 赋值运算符                       | s1 = s2;                     |
+| +             | 字符串连接                       | s3 = s1 + s2;                |
+| +=            | 追加字符串                       | s1 += "abc";                 |
+| ==            | 判断字符串是否相等               | if(s1 == s2)                 |
+| !=            | 判断字符串是否不相等             | if(s1 != s2)                 |
+| <, >, <=, >=  | 字典序比较                       | if(s1 < s2)                  |
+| []            | 访问指定位置字符                 | `char c = s1[0];`              |
+| <<, >>        | 输入输出流运算符                 | `std::cin >> s1; std::cout << s1;` |
 
 ## 向函数传递对象
+### 使用对象作为函数参数
+
+
+## 对象的赋值和复制
+
+## 静态成员
