@@ -490,8 +490,206 @@ string 的类运算符
 
 ## 向函数传递对象
 ### 使用对象作为函数参数
-
+其实和普通变量一样……   
 
 ## 对象的赋值和复制
+### 对象赋值语句
+A 和 B 是同一类的两个对象，那么有下述对象赋值语句:
+``` cpp
+B = A;
+```
+把对象 A 的数据成员的值逐位复制给对象 B。  
+
+等号 C++ 已经重载过了，做了非常多的工作。  
+
+运算符重载的例子：  
+``` cpp
+#include <iostream>
+
+class MyClass
+{
+  public:
+    MyClass(int a, int b) : x(a), y(b)
+    {
+    }
+    MyClass() : x(0), y(0)
+    {
+    }
+    // MyClass &operator=(MyClass &&) = default;
+    // MyClass &operator=(const MyClass &) = default;
+    MyClass &operator=(const MyClass &p)
+    {
+        std::cout << "= operator overload" << std::endl;
+        this->x = p.x;
+        this->y = p.y;
+        return *this;
+    }
+
+    MyClass operator+(const MyClass &p)
+    {
+        std::cout << "+ operator overload" << std::endl;
+        MyClass res;
+        res.x = this->x += p.x;
+        res.y = this->y += p.y;
+        return res;
+    }
+    void print()
+    {
+        std::cout << "x = " << x << std::endl;
+        std::cout << "y = " << y << std::endl;
+    }
+
+  private:
+    int x, y;
+};
+
+int main(int argc, char *argv[])
+{
+    MyClass a(1, 2), b(2, 3);
+    std::cout << "a: " << std::endl;
+    a.print();
+    std::cout << "b: " << std::endl;
+    b.print();
+    // b.operator=(a);
+    b = a;
+    std::cout << "b: " << std::endl;
+    b.print();
+    // a.operator+(b);
+    a = a + b;
+    std::cout << "a: " << std::endl;
+    a.print();
+    return 0;
+}
+```
+### 对象的复制：拷贝构造函数
+在定义对象时用另一个对象初始化。   
+有两种方式，带入或赋值。两者等价。  
+``` cpp
+Point p2(p1); // 代入法
+Point p2 = p1; // 赋值法
+```
+
+缺省拷贝构造函数，C++ 会自动将一个已存在的对象赋值给新对象，逐一赋值变量的成员。  
+
+拷贝构造函数（特殊的构造函数，用于依据已存在的对象建立一个新对象）：  
+``` cpp
+类名 (const 类名 & 对象名)
+{
+    // 拷贝构造函数的函数体
+}
+```
+
+例：
+``` cpp
+class MyClass
+{
+  public:
+    MyClass(int a, int b) : x(a), y(b)
+    {
+    }
+    MyClass() : x(0), y(0)
+    {
+    }
+    MyClass(const MyClass &p)
+    {
+        x = 2 * p.x;
+        y = 2 * p.y;
+    }
+};
+int main()
+{
+    MyClass a(1, 2), b(a);
+    std::cout << "a: " << std::endl;
+    a.print();
+    std::cout << "b: " << std::endl;
+    b.print();
+}
+```
+
+输出：
+```
+a: 
+x = 1
+y = 2
+b: 
+x = 2
+y = 4
+```
+
+注意：
+``` cpp
+MyClass p1 = p2; //赋值
+p1 = p2;         // 复制
+```
+
+1. 当类的一个对象去初始化该类的另一个对象时，拷贝构造函数将会被调用。  
+2. 当函数的形参是类的对象，在调用函数进行形参和实参结合时，拷贝函数将会被调用。  
+3. 当函数的返回值是类的对象时，函数调用完毕将返回值（对象）带回函数调用处时。  
+
+```cpp
+Point fun2()
+{
+    Point p1(10, 20);
+    return p1;
+}
+
+int main()
+{
+    Point p2;
+    p2 = fun2(); // 赋值 又拷贝
+}
+```
+
 
 ## 静态成员
+在类定义中，它的成员可用关键字 static 定义，无论创建多少个类的对象，静态成员都只有一个副本。  
+
+``` cpp
+#include <iostream>
+
+class MyClass
+{
+  public:
+    MyClass()
+    {
+        count++;
+    }
+    ~MyClass()
+    {
+        count--;
+    }
+    static int count;
+};
+
+int MyClass::count = 0;
+
+int main(int argc, char *argv[])
+{
+    MyClass *a = new MyClass[100];
+    MyClass b;
+
+    std::cout << a->count << std::endl;
+    delete[] a;
+    std::cout << a->count << std::endl;
+}
+```
+
+输出：
+```
+101
+1
+```
+
+静态成员甚至可以用类名直接调用：
+``` cpp
+MyClass::count = 10;
+```
+## 友元
+### 友元函数
+友元函数不是当前类的成员函数，而是独立于当前类的外部函数，但它可以访问该类的所有对象的成员，包括私有成员。  
+```cpp
+friend void disp(Girl &g);
+```
+## 类的组合
+
+## 常类型
