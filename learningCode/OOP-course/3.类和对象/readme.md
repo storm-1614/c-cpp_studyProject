@@ -687,9 +687,124 @@ MyClass::count = 10;
 ## 友元
 ### 友元函数
 友元函数不是当前类的成员函数，而是独立于当前类的外部函数，但它可以访问该类的所有对象的成员，包括私有成员。  
+
 ```cpp
 friend void disp(Girl &g);
 ```
-## 类的组合
 
+``` cpp
+class Boy; // 其中一个类要提前声明
+class Girl
+{
+  public:
+    Girl();
+    ~Girl();
+    friend void disp(Girl &); // 友元函数声明
+    friend void prdata(Girl &, Boy &); // 一个函数同时定义为两个类的友元
+    void dp(Boy &); // 一个类的成员函数是另一个类的友元函数
+
+  private:
+    std::string name;
+    int age;
+};
+
+class Boy
+{
+  public:
+    friend void prdata(Girl &, Boy &);
+    friend Girl::dp(Boy &); // 通过 :: 运算符定义友元函数
+}
+
+void disp(Girl &x) // 友元函数实现
+{
+    std::cout << x.name << std::endl;
+    std::cout << x.age << std::endl;
+}
+```
+友元函数破坏了类的封装性。只推荐在某些时候用友元。    
+当一个函数需要访问多个类时，友元函数就很重要。  
+一个函数可以同时定义为两个类的友元。  
+
+将另一个类的成员函数声明为当前类的友元函数。这种成员函数不仅可以访问自己所在类对象的所有成员，还可以访问声明友元的类的成员。  
+### 友元类
+一个类作为另一个类的友元
+``` cpp
+class Y{
+};
+
+class X{
+    friend Y;
+};
+```
+作为友元类的 Y 中的所有成员函数都可以访问 X 中的所有成员（包括私有成员）。  
+类 Y 的所有成员函数都成为 X 的友元函数。  
+
+友元是单向的不具备交换性。  
+## 类的组合
+在另一个类中将类作为成员数据。  
+``` cpp
+class A
+{
+  private:
+  public:
+};
+
+class B
+{
+  private:
+    A a;
+
+  public:
+};
+```
+其中 B 类中的数据成员 a 是一个 A 类的对象，称之为对象成员。  
+利用已订购i的类来构成新类。  
+由若干结构简单、易于实现的类来构造复杂的类。  
 ## 常类型
+### 常引用
+```
+const 类型 & 引用名;
+```
+例子：
+``` cpp
+int a = b;
+const int &b = a;
+```
+b 是常引用，它所引用的对象不允许修改。  
+比如：
+``` cpp
+int add (const int &i, const int &j)
+{
+    i = i + 30;j = j - 30;
+    return i + j;
+}
+```
+编译报错，因为常应用。不能修改 i, j 的值。  
+![](./src/1.png)
+
+### 常对象
+```cpp
+类名 const 对象名(参数表);
+const 类名 对象名(参数表);
+```
+
+常对象是指在声明时用 const 修饰的对象，其任何成员在生命周期内都不能被被修改。                                    
+``` cpp
+const Location obj(1.0, 2.0);  // 常对象   
+```
+特性：                                     
+- 只能调用该类的常成员函数（**const修饰的成员函数**），**不能调用普通成员函数**。     
+- 不能修改任何成员变量的值
+- 常用于函数参数传递：`void func(const Location &loc)`  
+- 既避免拷贝开销，又保证对象不被修改         
+                                           
+### 常对象成员
+
+使用 const 说明的数据成员就叫常数据成员    
+其只能在构造函数通过成员初始化列表进行初始化。  
+
+常成员函数(const 写在后面)：  
+``` cpp
+类型说明符 函数名(参数表) const;
+```
+const 是函数类型的组成部分，在函数的声明和实现中都要带 const。  
