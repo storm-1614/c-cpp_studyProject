@@ -779,7 +779,7 @@ int add (const int &i, const int &j)
     return i + j;
 }
 ```
-编译报错，因为常应用。不能修改 i, j 的值。  
+编译报错，因为常引用。不能修改 i, j 的值。  
 ![](./src/1.png)
 
 ### 常对象
