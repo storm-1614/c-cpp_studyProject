@@ -1,45 +1,33 @@
 #include <iostream>
 
-class X
+class Base
 {
   public:
-    X();
-    X(X &&) = default;
-    X(const X &) = default;
-    X &operator=(X &&) = default;
-    X &operator=(const X &) = default;
-
-    X operator++()
+    virtual void show()
     {
-        std::cout << "前自增" << std::endl;
-        return *this;
+        std::cout << "基类" << std::endl;
     }
-    ~X();
-    int i1, i2, i3;
-    friend X operator++(X &op, int);
 
   private:
 };
 
-X::X()
+class Derived : public Base
 {
-}
+  public:
+    void Show() override
+    {
+        std::cout << "派生类" << std::endl;
+    }
 
-X::~X()
-{
-}
-
-X operator++(X &op, int)
-{
-    X tmp(op);
-    op.i1++;
-    op.i2++;
-    op.i3++;
-    return tmp;
-}
+  private:
+};
 int main(int argc, char *argv[])
 {
-    X a;
-    ++(++a++)++;
+    Base a, *ptr;
+    Derived b;
+    ptr = &a;
+    ptr->show();
+    ptr = &b;
+    ptr->show();
     return 0;
 }

@@ -477,4 +477,238 @@ int main()
 
 ## 虚函数
 
+``` cpp
+#include <iostream>
+
+class Base
+{
+  public:
+    void show()
+    {
+        std::cout << "基类" << std::endl;
+    }
+
+  private:
+};
+
+class Derived : public Base
+{
+  public:
+    void show()
+    {
+        std::cout << "派生类" << std::endl;
+    }
+
+  private:
+};
+int main(int argc, char *argv[])
+{
+    Base a, *ptr;
+    Derived b;
+    ptr = &a;
+    ptr->show();
+    ptr = &b;
+    ptr->show();
+    return 0;
+}
+```
+
+输出:
+```
+基类
+基类
+```
+没有虚函数，用基类指针指向派生类只能调用基类的同名函数。  
+
+要能调用派生类的虚函数，基类要有同名的虚函数。  
+
+基类指针指向派生类对象的时候，原本基类指针不能访问派生类的成员。如果在基类定义了虚函数，派生类按照规则写了**同名函数**就可以访问派生类的同名函数了。  
+要求：函数名，返回类型和参数个数、类型、顺序都要一模一样。  
+
+(满足赋值兼容规则的指针，引用型的返回类型也可以)  
+
+``` cpp
+#include <iostream>
+
+class Base
+{
+  public:
+    virtual void show()  // 添加了 virtual 关键字
+    {
+        std::cout << "基类" << std::endl;
+    }
+
+  private:
+};
+
+class Derived : public Base
+{
+  public:
+    void show()
+    {
+        std::cout << "派生类" << std::endl;
+    }
+
+  private:
+};
+int main(int argc, char *argv[])
+{
+    Base a, *ptr;
+    Derived b;
+    ptr = &a;
+    ptr->show();
+    ptr = &b;
+    ptr->show();
+    return 0;
+}
+```
+
+输出，如下。此时基类指针指向派生类后，访问派生类成员同名虚函数，可以调用子类的虚函数。  
+```
+基类
+派生类
+```
+
+也可以在派生类的虚函数后面加上 `override`:
+``` cpp
+void show() override
+{
+    std::cout << "派生类" << std::endl;
+}
+```
+
+这样对于笔误，比如写成 Show 会有报错：
+
+![](4.png)  
+
+这样我们就知道我们重写函数写错了，回去修改，避免了很多莫名其妙的问题。  
+
+**综合示例：多态战斗系统**
+
+```cpp
+#include <iostream>
+
+// 基类：角色
+class Character
+{
+  protected:
+    std::string name;
+    int hp;
+
+  public:
+    Character(const std::string &n, int h) : name(n), hp(h) {}
+
+    virtual void attack()  = 0;   // 纯虚函数，攻击
+    virtual void defend()  = 0;   // 纯虚函数，防御
+    virtual ~Character() {}       // 虚析构
+};
+
+// 战士：普攻高，防御时举盾减免伤害
+class Warrior : public Character
+{
+  public:
+    Warrior() : Character("战士", 150) {}
+    void attack() override { std::cout << name << " 挥剑猛砍！" << std::endl; }
+    void defend() override { std::cout << name << " 举盾格挡！" << std::endl; }
+};
+
+// 法师：远程魔法攻击，防御时开元素护盾
+class Mage : public Character
+{
+  public:
+    Mage() : Character("法师", 80) {}
+    void attack() override { std::cout << name << " 吟唱火球术！" << std::endl; }
+    void defend() override { std::cout << name << " 张开寒冰护盾！" << std::endl; }
+};
+
+// 刺客：高暴击，防御时闪避
+class Assassin : public Character
+{
+  public:
+    Assassin() : Character("刺客", 100) {}
+    void attack() override { std::cout << name << " 暗影背刺！" << std::endl; }
+    void defend() override { std::cout << name << " 烟雾闪避！" << std::endl; }
+};
+
+int main()
+{
+    Character *team[3] = { new Warrior(), new Mage(), new Assassin() };
+
+    // 多态：同一接口，不同行为
+    for (auto &c : team)
+    {
+        c->attack();   // 各自不同的攻击方式
+        c->defend();   // 各自不同的防御方式
+        delete c;
+    }
+    return 0;
+}
+```
+
+> 三个派生类通过重写 `attack()` 和 `defend()` 实现了各自的战斗风格。`main` 中用基类指针统一遍历，无需关心具体是哪个角色——这就是多态的核心价值。  
+
+
+若类内声明类外定义，在类内声明加 `virtual` 即可。  
+派生类加 `virtual` 可有可无，**而 `override` 建议写**。  
+
+### 虚析构函数  
+如果基类的析构函数不是虚函数，用基类指针 `delete` 派生类对象时，**只会调用基类的析构函数**，派生类的析构函数不会被执行——导致派生类中分配的资源无法释放（内存泄漏）。
+
+```cpp
+// 问题演示
+class Base
+{
+  public:
+    ~Base() { std::cout << "~Base()" << std::endl; }  // 非虚析构
+};
+
+class Derived : public Base
+{
+    int *data;
+  public:
+    Derived() : data(new int[100]) {}
+    ~Derived() { delete[] data; std::cout << "~Derived()" << std::endl; }
+};
+
+Base *p = new Derived();
+delete p;  // 只调用了 ~Base()，Derived 中的 data 泄漏！
+// 输出：~Base()
+```
+
+**正确做法**：基类析构函数加 `virtual`。
+
+```cpp
+class Base
+{
+  public:
+    virtual ~Base() { std::cout << "~Base()" << std::endl; }
+};
+// 此时 delete p 会先调 ~Derived()，再调 ~Base()
+// 输出：~Derived()  \n  ~Base()
+```
+
+**简单规则**：只要一个类被设计为多态基类（有虚函数），析构函数就应该声明为 `virtual`。不打算作为基类的普通类则不需要。
+
+
+### 虚函数与重载函数的关系
+
+| 虚函数                         | 同名成员                           | 重载                                           |
+|--------------------------------|------------------------------------|------------------------------------------------|
+| 在基类和派生类定义了同一个函数 | 在基类和派生类定义了同一个函数     | 重载是在同样作用域里的同名函数，但是参数不一样 |
+| 基类的指针想要访问派生类的成员                       | 派生类的对象无法再访问基类同名函数 |                                                |
+
+
+虚函数和同名成员的覆盖可能同时发生。（？）  
+
+### 纯虚函数
+``` cpp
+virtual 函数类型 函数名(参数表)=0;
+virtual float area()=0; // 在基类的虚函数定义 = 0，变成纯虚函数，避免异常调用。
+```
+
+
+定义纯虚函数说明，该函数必须要重写该函数，不然无法实现该方法。  
+如果一个类至少有一个纯虚函数,那么这个类是抽象类。  
+
+
 ## 应用
