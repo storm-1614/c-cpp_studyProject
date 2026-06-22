@@ -25,17 +25,13 @@ class Dialog : public QDialog
 
     void on_chkBoxBold_checkStateChanged(const Qt::CheckState &arg1);
 
-    void on_radioBlue_clicked();
-
-    void on_radioRed_clicked();
-
-    void on_radioBlack_clicked();
-
     void on_btnClear_clicked();
 
     void on_btnOK_clicked();
 
     void on_btnExit_clicked();
+
+    void do_setFontColor(); // 设置文字颜色的自定义槽函数
 
   private:
     Ui::Dialog *ui;

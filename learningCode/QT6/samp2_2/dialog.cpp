@@ -5,7 +5,11 @@
 Dialog::Dialog(QWidget *parent) : QDialog(parent), ui(new Ui::Dialog)
 {
     ui->setupUi(this);
+    connect(ui->radioBlack, SIGNAL(clicked()), this, SLOT(do_setFontColor()));
+    connect(ui->radioBlue, SIGNAL(clicked()), this, SLOT(do_setFontColor()));
+    connect(ui->radioRed, SIGNAL(clicked()), this, SLOT(do_setFontColor()));
 }
+
 
 Dialog::~Dialog()
 {
@@ -73,24 +77,6 @@ void Dialog::on_chkBoxBold_checkStateChanged(const Qt::CheckState &arg1)
 }
 
 
-void Dialog::on_radioBlue_clicked()
-{
-    ui->plainTextEdit->setStyleSheet("QPlainTextEdit { color: blue; }");
-}
-
-
-void Dialog::on_radioRed_clicked()
-{
-    ui->plainTextEdit->setStyleSheet("QPlainTextEdit { color: red; }");
-}
-
-
-void Dialog::on_radioBlack_clicked()
-{
-    ui->plainTextEdit->setStyleSheet("QPlainTextEdit { color: black; }");
-}
-
-
 void Dialog::on_btnClear_clicked()
 {
     ui->plainTextEdit->clear();
@@ -106,4 +92,25 @@ void Dialog::on_btnOK_clicked()
 void Dialog::on_btnExit_clicked()
 {
     exit(0);
+}
+
+void Dialog::do_setFontColor()
+{
+    QPalette plet = ui->plainTextEdit->palette();
+    if (ui->radioBlue->isChecked())
+    {
+        plet.setColor(QPalette::Text, Qt::blue);
+    }
+    else if (ui->radioRed->isChecked())
+    {
+        plet.setColor(QPalette::Text, Qt::red);
+    }
+    else if (ui->radioBlack->isChecked())
+    {
+        plet.setColor(QPalette::Text, Qt::black);
+    }
+    else
+        plet.setColor(QPalette::Text, Qt::black);
+
+    ui->plainTextEdit->setPalette(plet);
 }

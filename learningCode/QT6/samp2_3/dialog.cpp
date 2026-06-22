@@ -52,23 +52,7 @@ void Dialog::iniUI()
     setLayout(VLay);
 }
 
-void Dialog::iniSignalSlots()
-{
-    // 3 个设置颜色的单选按钮
-    connect(radioBlue, SIGNAL(clicked()), this, SLOT(do_setFontColor()));
-    connect(radioRed, SIGNAL(clicked()), this, SLOT(do_setFontColor()));
-    connect(radioBlack, SIGNAL(clicked()), this, SLOT(do_setFontColor()));
 
-    // 3 个设置字体的复选框
-    connect(chkBoxUnder, SIGNAL(clicked(bool)), this, SLOT(do_chkBoxUnder(bool)));
-    connect(chkBoxItalic, SIGNAL(clicked(bool)), this, SLOT(do_chkBoxItalic(bool)));
-    connect(chkBoxBold, SIGNAL(clicked(bool)), this, SLOT(do_chkBoxBold(bool)));
-
-    // 3 个按钮与窗口的槽函数关联
-    connect(btnOK, SIGNAL(clicked()), this, SLOT(accept()));
-    connect(btnCancel, SIGNAL(clicked()), this, SLOT(reject()));
-    connect(btnClose, SIGNAL(clicked()), this, SLOT(close()));
-}
 
 void Dialog::do_chkBoxUnder(bool checked)
 {

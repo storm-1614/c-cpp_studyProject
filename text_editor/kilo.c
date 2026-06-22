@@ -62,6 +62,8 @@ typedef struct erow
 struct editorConfig
 {
     int cx, cy; // 光标位置
+    int rowoff; // row offset
+    int coloff;
     int screenrows;
     int screencols;
     int numrows;
@@ -248,7 +250,7 @@ void editorOpen(char *filename)
     char *line = NULL;
     size_t linecap = 0;
     ssize_t linelen;
-    while((linelen = getline(&line, &linecap, fp)) != -1)
+    while ((linelen = getline(&line, &linecap, fp)) != -1)
     {
         while (linelen > 0 && (line[linelen - 1] == '\n' || line[linelen - 1] == '\r'))
             linelen--;
@@ -278,12 +280,34 @@ void abAppend(struct abuf *ab, const char *s, int len)
 }
 
 /*** output ***/
+
+void editorScroll()
+{
+    if (E.cy < E.rowoff)
+    {
+        E.rowoff = E.cy;
+    }
+    if (E.cy >= E.rowoff + E.screenrows)
+    {
+        E.rowoff = E.cy - E.screenrows + 1;
+    }
+    if (E.cx < E.coloff)
+    {
+        E.coloff = E.cx;
+    }
+    if (E.cx >= E.coloff + E.screencols)
+    {
+        E.coloff = E.cx - E.screencols + 1;
+    }
+}
+
 void editorDrawRows(struct abuf *ab)
 {
     int y;
     for (y = 0; y < E.screenrows; y++)
     {
-        if (y >= E.numrows)
+        int filerow = y + E.rowoff;
+        if (filerow >= E.numrows)
         {
             if (E.numrows == 0 && y == E.screenrows / 3)
             /*
@@ -313,15 +337,19 @@ void editorDrawRows(struct abuf *ab)
         }
         else
         {
-            int len = E.row[y].size;
+            int len = E.row[filerow].size - E.coloff;
+            if (len < 0)
+                len = 0;
             if (len > E.screencols)
                 len = E.screencols;
-            abAppend(ab, E.row[y].chars, len);
+            abAppend(ab, &E.row[filerow].chars[E.coloff], len);
         }
 
         abAppend(ab, "\x1b[K", 3);
         if (y < E.screenrows - 1)
+        {
             abAppend(ab, "\r\n", 2);
+        }
     }
 }
 
@@ -333,6 +361,7 @@ void abFree(struct abuf *ab)
 
 void editorMoveCursor(int key)
 {
+    erow *row = (E.cy >= E.numrows) ? NULL : &E.row[E.cy];
     switch (key)
     {
     case ARROW_LEFT:
@@ -342,7 +371,7 @@ void editorMoveCursor(int key)
         }
         break;
     case ARROW_RIGHT:
-        if (E.cx != E.screencols - 1)
+        if (row && E.cx < row->size)
         {
             E.cx++;
         }
@@ -354,7 +383,7 @@ void editorMoveCursor(int key)
         }
         break;
     case ARROW_DOWN:
-        if (E.cy != E.screenrows - 1)
+        if (E.cy < E.numrows)
         {
             E.cy++;
         }
@@ -400,6 +429,8 @@ void editorProcessKeypress()
 
 void editorRefreshScreen()
 {
+    editorScroll();
+
     struct abuf ab = ABUF_INIT;
     abAppend(&ab, "\x1b[?25l", 6);
     /*
@@ -414,7 +445,7 @@ void editorRefreshScreen()
     editorDrawRows(&ab);
 
     char buf[32];
-    snprintf(buf, sizeof(buf), "\x1b[%d;%dH", E.cy + 1, E.cx + 1);
+    snprintf(buf, sizeof(buf), "\x1b[%d;%dH", (E.cy - E.rowoff) + 1, (E.cx - E.coloff) + 1); // 确定光标位置
     abAppend(&ab, buf, strlen(buf));
 
     abAppend(&ab, "\x1b[?25h", 6);
@@ -426,6 +457,8 @@ void initEditor()
 {
     E.cx = 0;
     E.cy = 0;
+    E.rowoff = 0;
+    E.coloff = 0;
     E.numrows = 0;
     E.row = NULL;
     if (getWindowSize(&E.screenrows, &E.screencols) == -1)
