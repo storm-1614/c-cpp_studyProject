@@ -4,7 +4,6 @@
 ## 🚧 施工中：
 - [x] `snake` 贪吃蛇简易 damo
 - [x] `2048` 2048 简易 damo
-- [x] `learningCode/XMUTnewbie` XMUT 计算机学院新手村 OJ 平台某些 AC 代码(大一上学期末忙着学 ctf 了，没有 ak 新手村)  
 - [ ] `learningCode/SDL` SDL 图形库学习集
 - [ ] `learningCode/QT6` QT6 图形库学习集
 - [ ] `learningCode/algorithm` 所做过的算法题集
