@@ -11,6 +11,7 @@
 - [x] `learningCode/OOP-course` XMUT 大一下学期面向对象程序设计笔记
 - [ ] `text_editor` Unix 下终端文本编辑器
 - [ ] `fmgr` 文件管理器
+- [x] `yemu` 来自 NJU 的简易 CPU 模拟器的代码阅读
 
 ## 🎓学术诚信(Academic integrity)
 该 repo 可能出现课程实验的代码，在完成实验课程的作业时，不能因为时间紧迫而做出 copy 的行为，不然本 repo 的意义就被**扭曲**了。  
