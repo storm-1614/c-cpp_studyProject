@@ -220,4 +220,65 @@ class Solution
 };
 ```
 
+## 3. 无重复字符的最长子串
+给定一个字符串 s ，请你找出其中不含有重复字符的最长子串的长度。  
 
+---
+用滑动窗口配合哈希表就可以求解。  
+
+``` cpp
+class Solution
+{
+  public:
+    int lengthOfLongestSubstring(std::string s)
+    {
+        int left = 0, right = 0, n = 0, max_n = 0;
+        int len = s.size();
+        std::unordered_map<char, int> map;
+        while (right < len)
+        {
+            if (map.find(s[right]) == map.end())
+            {
+                n++;
+                map[s[right]] = right;
+                max_n = std::max(max_n, n);
+                right++;
+            }
+            else
+            {
+                map.erase(s[left]);
+                left++;
+                n--;
+            }
+        }
+        return max_n;
+    }
+};
+```
+
+这个代码效率不够，因为每走一步都有 if 判断是否有重复字符。实际可以优化为嵌套循环：  
+``` cpp
+class Solution
+{
+  public:
+    int lengthOfLongestSubstring(std::string s)
+    {
+        int left, right, ans = 0;
+        int len = s.size();
+        std::unordered_map<char, int> charList;
+        for (left = 0, right = 0; right < len; right++)
+        {
+            charList[s[right]]++;
+            while (charList[s[right]] > 1)
+            {
+                charList[s[left]]--;
+                left++;
+            }
+            ans = std::max(ans, right - left + 1);
+        }
+        return ans;
+    }
+};
+```
+
+这样将判断语句放在循环内，当有重复字符时循环缩短左指针相较第一版代码观感更好。  
