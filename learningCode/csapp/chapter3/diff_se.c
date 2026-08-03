@@ -8,7 +8,7 @@ long absdiff_se(long x, long y)
     if (x < y)
     {
         lt_cnt++;
-        result =  y - x;
+        result = y - x;
     }
     else
     {
@@ -27,6 +27,24 @@ long goto_diff_se(long x, long y)
     result = y - x;
     return result;
 x_ge_y:
+    ge_cnt++;
+    result = x - y;
+    return result;
+}
+
+long goto_diff_se_v2(long x, long y)
+{
+    long result;
+    if (x < y)
+        goto True;
+    else
+        goto Done;
+
+True:
+    lt_cnt++;
+    result = y - x;
+    return result;
+Done:
     ge_cnt++;
     result = x - y;
     return result;
