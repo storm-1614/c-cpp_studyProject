@@ -282,3 +282,74 @@ class Solution
 ```
 
 这样将判断语句放在循环内，当有重复字符时循环缩短左指针相较第一版代码观感更好。  
+
+## 2026-08-04 567. 字符串的排列
+给你两个字符串 s1 和 s2 ，写一个函数来判断 s2 是否包含 s1 的 。如果是，返回 true ；否则，返回 false 。  
+换句话说，s1 的排列之一是 s2 的 子串 。  
+
+---
+只要是一种排列，那反正字母数量一样就行。那就用频数数组来存好了。C++ 的 vector 有重载`==` 运算符，直接用：  
+
+``` cpp
+class Solution
+{
+  public:
+    bool checkInclusion(std::string s1, std::string s2)
+    {
+        std::vector<int> window(26, 0);
+        std::vector<int> need(26, 0);
+        int left, right, n = s1.size();
+        for (auto iter : s1)
+        {
+            need[iter - 'a']++;
+        }
+        for (left = 0, right = 0; right < s2.size(); right++)
+        {
+            if (right - left + 1 < n)
+            {
+                window[s2[right] - 'a']++;
+                continue;
+            }
+            window[s2[right] - 'a']++;
+            if (window == need)
+                return true;
+            window[s2[left] - 'a']--;
+            left++;
+        }
+        return false;
+    }
+};
+```
+
+其实这样不是最简的，还可以去掉些冗余的判断：  
+
+``` cpp
+bool checkInclusion(std::string s1, std::string s2)
+{
+    std::vector<int> window(26, 0); // 当前窗口的字符频次
+    std::vector<int> need(26, 0);   // s1 的字符频次
+    int left, right, i;
+
+    if (s1.length() > s2.length())
+        return false;
+
+    // 遍历 s1 填好需求数组
+    for (i = 0; i < s1.length(); i++)
+        need[s1[i] - 'a'] += 1;
+
+    left = 0;
+    for (right = 0; right < s2.length(); right++)
+    {
+        window[s2[right] - 'a'] += 1;
+
+        if (right - left + 1 > s1.length())
+        {
+            window[s2[left] - 'a'] -= 1;
+            left++;
+        }
+        if (window == need)
+            return true;
+    }
+    return false;
+}
+```
