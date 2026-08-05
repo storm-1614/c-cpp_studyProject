@@ -353,3 +353,53 @@ bool checkInclusion(std::string s1, std::string s2)
     return false;
 }
 ```
+
+## 2026-08-05 406. 根据身高重建队列
+假设有打乱顺序的一群人站成一个队列，数组 people 表示队列中一些人的属性（不一定按顺序）。每个 people[i] = [$h_i$, $k_i$] 表示第 i 个人的身高为 hi ，前面 正好 有 $k_i$ 个身高大于或等于 hi 的人。
+
+请你重新构造并返回输入数组 people 所表示的队列。返回的队列应该格式化为数组 queue ，其中 queue[j] = [$h_j$, $k_j$] 是队列中第 j 个人的属性（queue[0] 是排在队列前面的人）。  
+
+---
+核心就在于怎么排序与插入。这是一个数学问题。  
+
+最终推导出来的排序规则是：**身高 h 降序，若身高相同，则按 k 升序。**    
+我们采用数学归纳法来证明：  
+
+假设排序后的人依次为：$p_1, p_2, ..., p_n$  
+有命题 $P(i)$：在完成前 i 个人的插入操作后，`ans` 中这 i 个人构造的序列，对于这 i 个人中的每一个人而言，其前面身高大于等于他的人数的恰好等于他自身的 k 值。  
+
+当 $i=0$ 时，`ans` 为空，命题显然成立。  
+
+假设 $P(i)$ 成立，现在要插入第 i + 1 个人 $p=(h,k)$  
+我们执行 `ans.insert(ans.begin() + k, p)` 即把 p 插入到 ans 的第 k 个位置（从 0 开始索引）。  
+
+当前 ans 中已有 i 个人，且他们都满足 身高 $\geq h$ （由排序性质得出）。我们恰好在索引 k 处插入，因此 p 的前面恰好正好有 k 个元素。而这 k 个元素的身高都必然 $\geq h$，且不存在任何身高 $< h$ 的元素，因为矮个子尚未被插入。 因此，p 前面身高大于等于他的人恰好为 k，p 满足条件。  
+
+对于已插入到人 $q=(h_q, k_q)$，(q 在插入 p 之前就已经在 ans 中)分两种情况：  
+A. q 原来在插入位置 k 的前面，插入 p 后 q 仍然在 p 前面，其前面的元素集合没有发生任何变化，因此 q 的 k 值不变。  
+B. q 原来在插入位置 k 的后面（或正好被 k 位置挤到后面），插入 p 后，q 会向后移动一位，p 会被添加到 q 的前面，此时检查 p 是否会记录 q 的更高或等高计数：  
+
+如果 $h_q > h$  ，则 q 更矮，不会记录 q 的计数，所以 q 的 k 值保持不变。如果 $h_q = h$ 那么 q 与 p 等高。因为排序是同身高按 k 升序，而 p 是第 i + 1 个被处理的，q 先于 p 被处理，说明 $k_q < k$ 也就是说，q 的原始 k 值小于 p 的原始 k 值。  
+基于有效解的隐含条件，$k_q < k$ 意味着 q 在最终队列必然位于 q 的前面。因此， q 不可能远比在索引 k 的后面，它必然在前面的位置，所以这种冲突不可能发生。  
+因此所有成员的 k 值在插入 p 后全部保持不变。  
+
+得证。  
+``` cpp
+class Solution
+{
+  public:
+    std::vector<std::vector<int>> reconstructQueue(std::vector<std::vector<int>> &people)
+    {
+        int i;
+        std::vector<std::vector<int>> ans;
+        std::sort(people.begin(), people.end(), [](const std::vector<int> &x, const std::vector<int> &y) {
+            if (x[0] != y[0])
+                return x[0] > y[0];
+            return x[1] < y[1];
+        });
+        for (i = 0; i < people.size(); i++)
+            ans.insert(ans.begin() + people[i][1], people[i]);
+        return ans;
+    }
+};
+```
