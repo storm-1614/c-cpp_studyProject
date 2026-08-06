@@ -403,3 +403,38 @@ class Solution
     }
 };
 ```
+
+## 2026-08-06 713. 乘积小于 K 的子数组
+
+给你一个整数数组 nums 和一个整数 k ，请你返回子数组内所有元素的乘积严格小于 k 的**连续子数组**的数目。  
+
+---
+核心是滑动窗口。  
+只需要维护一个窗口 `[left, right]` 保证窗口内的所有元素严格小于 k。可以发现有任意 $left'\in [left, right]$ 开头的子数组的层积也都满足小于 k。所以对于每个 right，满足条件的子数组就是 `right - left + 1`。  
+
+由此可以得到算法：  
+``` cpp
+class Solution
+{
+  public:
+    int numSubarrayProductLessThanK(std::vector<int> &nums, int k)
+    {
+        int left, right, mul = 1;
+        int n = nums.size();
+        int ans = 0;
+        for (left = 0, right = 0; right < n; right++)
+        {
+            mul *= nums[right];
+            while (mul >= k && left <= right)
+            {
+                mul /= nums[left];
+                left++;
+            }
+            ans += right - left + 1;
+        }
+        return ans;
+    }
+};
+```
+
+只需要在窗口乘积大于 k 时，将 left 向右移动直到窗口回归小于 k 此时就有如上所写的满足条件子数组。  
