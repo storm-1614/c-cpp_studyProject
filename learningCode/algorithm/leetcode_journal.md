@@ -438,3 +438,38 @@ class Solution
 ```
 
 只需要在窗口乘积大于 k 时，将 left 向右移动直到窗口回归小于 k 此时就有如上所写的满足条件子数组。  
+
+## 2026-08-07 424. 替换后的最长重复字符
+给你一个字符串 s 和一个整数 k 。你可以选择字符串中的任一字符，并将其更改为任何其他大写英文字符。该操作最多可执行 k 次。  
+在执行上述操作后，返回 包含相同字母的最长子字符串的长度。  
+
+---
+滑动窗口 + 哈希表。因为是子串，可以考虑滑动窗口。通过哈希表记录当前窗口的字符数量。因为窗口从左向右滑动，所以最大的那个字符永远可能出现在 s[right]。只需比较该值即可。  
+对于改写字符无法在 k 个内完成的。因为求的是子串，只需要 left 向右缩短窗口，更新哈希表减去 s[left]，直至窗口长度 - s[right] 数量小于等于 k 即可回归满足的窗口。此时计算最长字符串。  
+
+``` cpp
+class Solution
+{
+  public:
+    int characterReplacement(std::string s, int k)
+    {
+        std::unordered_map<char, int> count;
+        int maxCount = 0;
+        int maxLength = 0;
+        int n = s.length();
+        int left, right;
+        for (left = 0, right = 0; right < n; right++)
+        {
+            count[s[right]]++;
+            maxCount = std::max(maxCount, count[s[right]]);
+            while ((right - left + 1) - maxCount > k && left <= right)
+            {
+                count[s[left]]--;
+                left++;
+            }
+            maxLength = std::max(maxLength, right - left + 1);
+        }
+        return maxLength;
+    }
+};
+```
