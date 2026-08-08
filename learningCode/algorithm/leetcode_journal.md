@@ -473,3 +473,72 @@ class Solution
     }
 };
 ```
+
+## 2026-08-08 209. 长度最小的子数组
+给定一个含有 n 个正整数的数组和一个正整数 target 。  
+找出该数组中满足其总和大于等于 target 的长度最小的  [numsl, numsl+1, ..., numsr-1, numsr] ，并返回其长度。如果不存在符合条件的子数组，返回 0 。  
+
+---
+
+我第一想法是滑动窗口。然后一顿操作又加了 flag 和各种额外的 if 算是通过了。  
+
+``` cpp
+class Solution
+{
+  public:
+    int minSubArrayLen(int target, std::vector<int> &nums)
+    {
+        int n = nums.size();
+        int minestLength = INT_MAX;
+        int left, right;
+        int sum = 0;
+        bool flag = false;
+        for (left = 0, right = 0; right < n; right++)
+        {
+            sum += nums[right];
+            while (sum >= target && left < right)
+            {
+                sum -= nums[left];
+                left++;
+                flag = true;
+            }
+            if (sum >= target)
+                minestLength = std::min(minestLength, right - left + 1);
+            if (flag)
+                minestLength = std::min(minestLength, right - left + 2);
+            flag = false;
+        }
+        if (minestLength == INT_MAX)
+            return 0;
+        return minestLength;
+    }
+};
+```
+
+不过显然不太好，效率低下，代码乱。  
+然后我发现其实判断在 whlie 循环里面做是最好的。（好傻呀我）  
+
+``` cpp
+class Solution
+{
+  public:
+    int minSubArrayLen(int target, std::vector<int> &nums)
+    {
+        int n = nums.size();
+        int minestLength = INT_MAX;
+        int left, right;
+        int sum = 0;
+        for (left = 0, right = 0; right < n; right++)
+        {
+            sum += nums[right];
+            while (sum >= target && left <= right)
+            {
+                minestLength = std::min(minestLength, right - left + 1);
+                sum -= nums[left];
+                left++;
+            }
+        }
+        return minestLength == INT_MAX ? 0 : minestLength;
+    }
+};
+```
