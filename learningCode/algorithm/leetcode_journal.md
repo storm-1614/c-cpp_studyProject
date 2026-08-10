@@ -542,3 +542,36 @@ class Solution
     }
 };
 ```
+
+## 2026-08-10 238. 除了自身以外数组的乘积
+给你一个整数数组 nums，返回 数组 answer ，其中 answer[i] 等于 nums 中除了 nums[i] 之外其余各元素的乘积 。  
+题目数据 保证 数组 nums之中任意元素的全部前缀元素和后缀的乘积都在  32 位 整数范围内。  
+请 不要使用除法，且在 O(n) 时间复杂度内完成此题。  
+
+---
+前缀和的运用，真的就是 O(2n)。  
+只要从左往右遍历一遍维护 prefix 这样 `ans[i]` 就保存左侧的乘积。再从右往左遍历与旧的 `ans[i]` 相乘就能得到左右侧的乘积。  
+先更新 `ans` 再维护新的 prefix/suffix 即可忽略当前位。  
+
+``` cpp
+class Solution
+{
+  public:
+    std::vector<int> productExceptSelf(std::vector<int> &nums)
+    {
+        int n = nums.size(), prefix = 1, suffix = 1, i;
+        std::vector<int> ans(n, 0);
+        for (i = 0; i < n; i++)
+        {
+            ans[i] = prefix;
+            prefix *= nums[i];
+        }
+        for (i = n - 1; i >= 0; i--)
+        {
+            ans[i] *= suffix;
+            suffix *= nums[i];
+        }
+        return ans;
+    }
+};
+```
