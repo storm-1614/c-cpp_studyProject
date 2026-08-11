@@ -575,3 +575,115 @@ class Solution
     }
 };
 ```
+
+## 2026-08-11 42. 接雨水
+给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。  
+
+输入：height = [0,1,0,2,1,0,1,3,2,1,2,1]  
+输出：6  
+解释：上面是由数组 [0,1,0,2,1,0,1,3,2,1,2,1] 表示的高度图，在这种情况下，可以接 6 个单位的雨水（蓝色部分表示雨水）。   
+
+---
+
+可以用双指针贪心的方式在求解。需要 `left`、`right` 指针，还有 `left_max` 和 `right_max` 存储两侧最大高度。  
+考虑左侧，在 `height[left] < height[right]` 的情况下，右侧肯定是可以容纳雨水的，就看左侧。考虑：`height[left] >= left_max` 表明此格是无法接雨水的，这时候更新 `left_max` 就好。而当 `height[left] < left_max` 此时可以容纳 `left_max - height[left]` 的雨水。  
+左侧同理，这里还承担了 `height[left] == height[right]` 的情况。实际同理即可。  
+
+``` cpp
+class Solution
+{
+  public:
+    int trap(std::vector<int> &height)
+    {
+        int n = height.size();
+        int left = 0, right = n - 1;
+        int left_max = 0, right_max = 0;
+        int water = 0;
+
+        while (left < right)
+        {
+            if (height[left] < height[right])
+            {
+                if (height[left] >= left_max)
+                    left_max = height[left];
+                else
+                    water += left_max - height[left];
+                left++;
+            }
+            else
+            {
+                if (height[right] >= right_max)
+                    right_max = height[right];
+                else
+                    water += right_max - height[right];
+                right--;
+            }
+        }
+        return water;
+    }
+};
+```
+
+还有动态规划法，首先从最简单的暴力法出发：  
+``` cpp
+class Solution
+{
+  public:
+    int trap(std::vector<int> &height)
+    {
+        int n = height.size(), i, j;
+        int water = 0;
+        int left_max = 0, right_max = 0;
+        if (n == 0)
+            return 0;
+        /* 遍历每个位置
+         * 对每个位置，分别向左向右扫描最大值
+         */
+        for (i = 0; i < n; i++)
+        {
+            for (j = i; j >= 0; j--)
+                left_max = std::max(left_max, height[j]);
+
+            for (j = i; j < n; j++)
+                right_max = std::max(right_max, height[j]);
+
+            water += std::min(left_max, right_max) - height[i]; // 木桶效应
+        }
+        return water;
+    }
+};
+```
+
+发现有状态转移方程：
+``` cpp
+left_max[i] = max(left_max[i - 1], height[i]);
+right_max[i] = max(right_max[i + 1], height[i]);
+```
+可以做预处理。  
+
+``` cpp
+class Solution
+{
+  public:
+    int trap(std::vector<int> &height)
+    {
+        int n = height.size();
+        if (n == 0)
+            return 0;
+        std::vector<int> left_max(n), right_max(n);
+
+        left_max[0] = height[0];
+        for (int i = 1; i < n; i++)
+            left_max[i] = std::max(left_max[i - 1], height[i]);
+        right_max[n - 1] = height[n - 1];
+        for (int i = n - 2; i >= 0; i--)
+            right_max[i] = std::max(right_max[i + 1], height[i]);
+
+        int water = 0;
+        for (int i = 0; i < n; i++)
+            water += std::min(left_max[i], right_max[i]) - height[i];
+
+        return water;
+    }
+};
+```
