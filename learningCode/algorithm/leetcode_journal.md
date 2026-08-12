@@ -687,3 +687,188 @@ class Solution
     }
 };
 ```
+
+## 2026-08-12 5 最长回文子串
+给你一个字符串 s，找到 s 中最长的回文子串。  
+
+---
+朴素解法，时间 $O(n^3)$ 空间 $O(1)$  
+
+双指针遍历所有可能性依次判断是否回文数，更新 `maxLen` 和 `start`。  
+
+``` cpp
+class Solution
+{
+  public:
+    bool isPalindrome(const std::string &s, int left, int right)
+    {
+        while (left < right)
+        {
+            if (s[left] != s[right])
+                return false;
+            left++;
+            right--;
+        }
+        return true;
+    }
+    std::string longestPalindrome(std::string s)
+    {
+        int n = s.size();
+        if (n < 2)
+            return s;
+        int maxLen = 1, start = 0;
+        int i, j;
+        for (i = 0; i < n; i++)
+        {
+            for (j = i; j < n; j++)
+            {
+                if (isPalindrome(s, i, j) && (j - i + 1) > maxLen)
+                {
+                    start = i;
+                    maxLen = j - i + 1;
+                }
+            }
+        }
+        return s.substr(start, maxLen);
+    }
+};
+```
+
+---
+
+可以由已经算出来的小回文的结果推导出大回文的结果，避免重复判断。引入动态规划法：  
+
+定义  `bool dp[i][j]` 表示 s[i..j] 闭区间，存该区间串是否是回文串。  
+有状态转移方程：  
+一个字符串 `s[i..j]` 是回文，满足：  
+1. 首尾字符相等 `s[i] == s[j]`  
+2. 去掉首尾后，中间部分也是回文 `s[i+1..j-1]` 是回文，也就是说： `dp[i+1][j-1] == true`  
+
+所以有：  
+
+``` cpp
+dp[i][j] = (s[i] == s[j]) && dp[i+1][j-1]
+```
+
+还需要考虑到子串长度很短时：`dp[i+1][j-1]` 可能不存在或没有意义。  
+- 长度为 1 `i == j` 单个字符必然是回文，所以 `dp[i][j] = true`  
+- 长度为 2 `j == i+1` 此时 `dp[i+1][j-1]` 变成 `dp[j][i]` 下标没有意义。只需要判断 `s[i] == s[j]` 即可，两个字符相等就是回文。  
+
+所以转移方程就是：  
+``` cpp
+if (s[i] == s[j])
+{
+    if (j - i < 2)
+        dp[i][j] = true;
+    else
+        dp[i][j] = dp[i+1][j-1];
+}
+```
+
+因为 `dp[i][j]` 依赖 `dp[i+1][j-1]`，也就是依赖更短的子串结果，所以必须先算完所有短子串，再算长子串。也就是按照子串长度从小到大遍历。  
+
+``` cpp
+for (int len = 1; len <= n; len++)
+{
+    for (i = 0; i + len - 1 < n; i++)
+    {
+        int j = i + len - 1;
+        ...
+    }
+}
+```
+
+复杂度为:时间 $O(n^2)$，空间 $O(n^2)$  
+
+``` cpp
+class Solution
+{
+  public:
+    std::string longestPalindrome(std::string s)
+    {
+        int n = s.size();
+        if (n < 2)
+            return s;
+        // dp[i][j] = true 代表 s[i..j] 是回文
+        std::vector<std::vector<bool>> dp(n, std::vector<bool>(n, false));
+
+        int start = 0;   // 最长回文的起始位置
+        int max_len = 1; // 记录最长回文的长度
+
+        // 单个字符必然回文
+        for (int i = 0; i < n; i++)
+            dp[i][i] = true;
+
+        for (int len = 2; len <= n; len++)
+        {
+            for (int i = 0; i + len - 1 < n; i++)
+            {
+                int j = i + len - 1;
+                if (s[i] != s[j])
+                {
+                    dp[i][j] = false;
+                    continue;
+                }
+                // 首尾相等看中间部分
+                if (len == 2)
+                    dp[i][j] = true; // 长度为 2,首尾相等即可
+                else
+                    dp[i][j] = dp[i + 1][j - 1]; // 长度 >= 3，取决于去掉首尾后的部分
+
+                // 更新
+                if (dp[i][j] && len > max_len)
+                {
+                    start = i;
+                    max_len = len;
+                }
+            }
+        }
+        return s.substr(start, max_len);
+    }
+};
+```
+
+动态规划用 $O(n^2)$ 空间换取时间，但因为回文串关于中心对称，所以只要枚举中心点，当 `s[left] == s[right]` 就继续向外两边扩展就不需要 dp 数组了。  
+但要同时枚举奇数长度和偶数长度的字符，实际下来可以复杂度可以达到：时间 $O(n^2)$，空间 $O(1)$。  
+``` cpp
+class Solution
+{
+  public:
+    std::pair<int, int> expandAroundCenter(const std::string &s, int left, int right)
+    {
+        while (left >= 0 && right < s.size() && s[left] == s[right])
+        {
+            left--;
+            right++;
+        }
+        return {left + 1, right - 1};
+    }
+    std::string longestPalindrome(std::string s)
+    {
+        if (s.empty())
+            return "";
+        int start = 0, end = 0;
+        for (int i = 0; i < s.size(); i++)
+        {
+            // 奇数长子串
+            auto [l1, r1] = expandAroundCenter(s, i, i);
+            if (r1 - l1 > end - start)
+            {
+                start = l1;
+                end = r1;
+            }
+
+            // 偶数长度
+            auto [l2, r2] = expandAroundCenter(s, i, i + 1);
+            if (r2 - l2 > end - start)
+            {
+                start = l2;
+                end = r2;
+            }
+        }
+        return s.substr(start, end - start + 1);
+    }
+};
+```
+
+还有时间 $O(n)$ 的 Manacher 算法，有点抽象，就不写了……  
