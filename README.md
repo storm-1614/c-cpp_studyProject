@@ -9,6 +9,10 @@
 - [ ] `learningCode/algorithm` 所做过的算法题集
 - [ ] `learningCode/dataStructure` 数据结构
 - [x] `learningCode/OOP-course` XMUT 大一下学期面向对象程序设计笔记
+- [x] `learningCode/regex` regex.h 使用笔记
+- [x] `learningCode/stdarg` stdarg.h 使用笔记
+- [ ] `learningCode/elf` Linux ELF 文件解析笔记
+- [ ] `learningCode/csapp` csapp 书中的代码  
 - [ ] `text_editor` Unix 下终端文本编辑器
 - [ ] `fmgr` 文件管理器
 - [x] `yemu` 来自 NJU 的简易 CPU 模拟器的代码阅读
@@ -19,4 +23,4 @@
 MIT 学生手册中学术诚信的章节：**[Academic Integrity at MIT](https://integrity.mit.edu/)**
 
 ## 💥Share you idea
-如果你在阅读的过程中发现有地方出现错误，可以给我提出 issue。当然，如果能提 pull requests 就更好了。**对该 repo 有什么感想也是可以在 issue 提出来的！**  
+如果你在阅读的过程中发现有地方出现错误，可以给我提出 issue。当然，如果能给我 pull requests 就更好了。**对该 repo 有什么感想也是可以在 issue 提出来的！**  
