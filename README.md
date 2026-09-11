@@ -9,6 +9,9 @@
 - [ ] `learningCode/algorithm` 所做过的算法题集
 - [ ] `learningCode/dataStructure` 数据结构
 - [x] `learningCode/OOP-course` XMUT 大一下学期面向对象程序设计笔记
+- [ ] `learningCode/Computer-Organization` XMUT 大二上学期计算机组成原理笔记
+- [ ] `learningCode/Digital_Logic_Design` XMUT 大二上学期数字电路与逻辑设计笔记
+- [ ] `learningCode/Microcontroller_Principles_and_Applications` XMUT 大二上学期单片机原理与应用笔记
 - [x] `learningCode/regex` regex.h 使用笔记
 - [x] `learningCode/stdarg` stdarg.h 使用笔记
 - [ ] `learningCode/elf` Linux ELF 文件解析笔记
