@@ -55,7 +55,7 @@ $\overline{A}\overline{B} = \overline{A}+\overline{B}$
 对偶规则。  
 
 #### 记忆
-基础公式：  
+##### 基础公式  
 $A + 0 = A$  
 $A\cdot 1=A$  
 $A + 1 = 1$  
@@ -69,6 +69,31 @@ $A\overline{A}=A$
 - 自己和自己还是自己。   
 - 原变量和反变量“或”为1，“与” 为 0  
 
-交换律、结合律、分配律:  
+##### 交换律  
 $A+B=B+A$  
+$AB=BA$  
+
+##### 结合律  
+$(A+B)+C=A+(B+C)$  
+$(AB)C=A(BC)$  
+##### 分配律  
+$A(B+C)=AB+AC$  
+---
+$A+BC=(A+B)(A+C)$  
+
+##### 吸收公式
+$A+AB=A$，对应的对偶式：$A(A+B)=A$  
+$AB$ 已经包含在 $A$ 里面了，所以是多余的。  
+
+---
+$A+\overline{A}B=A+B$，对应的对偶式：$A(\overline{A}+B)=AB$  
+
+##### 摩根定律
+$\overline{A+B}=\overline{A}\overline{B}$  
+$\overline{AB}=\overline{A}+\overline{B}$  
+记忆口诀：**长杠拆开，符号翻转**  
+也就是：
+或变与：$+ \rightarrow \cdot$，与变或：$\cdot \rightarrow \cdot$，并且每个变量都取反。  
+
+
 ### 卡诺图化简
