@@ -446,6 +446,7 @@ $$
 - 每个圈只能包含1,2,4,8...个格  
 - 能圈大就尽量圈大
 - 同一个 1 可以被重复圈
+- 先保证或项要少，也就是以卡诺图圈尽可能少为准则。  
 
 卡诺图圈组时，同一个 1 可以被多个圈重复覆盖，重复覆盖的目的通常是让其他圈能够尽量大，从而得到更简单的表达式。  
 
@@ -456,7 +457,8 @@ $$
 2. 再尽量圈大
 3. 检查所有 1 是否都已覆盖，删掉多余圈
 
-圈只能是矩形。  
+> 注意边界对折时也是几何相邻的。  
+圈只能是**矩形**。  
 
 #### 例题
 (1) $F=BD+\overline{A}\overline{B}+A\overline{B}CD+\overline{B}C\overline{D}$ 绘制诺图。  
@@ -472,3 +474,46 @@ AB\backslash CD & 00 & 01 & 11 & 10 \\
 \end{array}
 $$
 
+(2)
+
+$$
+F(A,B,C,D)=\sum m(0,2,3,5,6,8,9,10,11,12,13,14,15)
+$$
+
+按相邻的 1 进行圈组，红色和绿色圈表示卡诺图首尾相邻的跨边界圈：
+
+![第二道题的卡诺图（含圈组）](karnaugh-map-example-2-groups.png)
+
+各圈对应的乘积项为：
+
+$$
+A,\quad \overline{B}\overline{D},\quad \overline{B}C,\quad B\overline{C}D,\quad BC\overline{D}
+$$
+
+因此最简与或式为：
+
+$$
+F=A+\overline{B}\overline{D}+\overline{B}C+B\overline{C}D+BC\overline{D}
+$$
+
+(3)
+
+$$
+F(A,B,C,D)=\sum m(0,5,7,9,10,12,13,14,15)
+$$
+
+这道题的处理方法与上一题相同：先按格雷码填写卡诺图，再圈出相邻的 1。
+
+![第三道题的卡诺图（含圈组）](karnaugh-map-example-3-groups.png)
+
+各圈对应的乘积项为：
+
+$$
+\overline{A}\overline{B}\overline{C}\overline{D},\quad BD,\quad A\overline{C}D,\quad AC\overline{D},\quad AB
+$$
+
+因此最简与或式为：
+
+$$
+F=\overline{A}\overline{B}\overline{C}\overline{D}+BD+A\overline{C}D+AC\overline{D}+AB
+$$
