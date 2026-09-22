@@ -153,6 +153,7 @@ Y &= A\overline{B}+B\overline{C}+\overline{B}C+\overline{A}B \\
 $$
 
 也就是消去**一致项/冗余项**：  
+
 $$
 XY+\overline{X}Z + YZ = XY + \overline{X}Z
 $$
@@ -229,7 +230,7 @@ $\overline{AB}=\overline{A}+\overline{B}$
 #### 最小项及最小项表达式
 最小项要求：**每个变量都必须出现一次，而且只能出现一次**  
 对于一个三变量逻辑函数，变量是$A,B,C$，变量可以是原变量也可以是反变量。  
-比如：$ABC$, $A\overline{B}C$,$\overline{A}B\overline{C}$, $\overline{A}]overline{B}\overline{C}$。  
+比如：$ABC$, $A\overline{B}C$,$\overline{A}B\overline{C}$, $\overline{A}\overline{B}\overline{C}$。  
 
 一个最小项对应唯一一组输入。比如 $A\overline{B}C$ 要等于一有：$A=1,B=0,C=1$，所以对应：$ABC=101_2$，而$101_2 = 5$，所以 $A\overline{B}C=m_5$ 
 
@@ -288,6 +289,7 @@ ABC = 111_2 = m_7
 $$
 
 所以 $Y=m_3+m_6+m_7$，通常简写为：  
+
 $$
 Y(A,B,C)=\sum m(3,6,7)
 $$
@@ -320,6 +322,7 @@ A\backslash BC & 00 & 01 & 11 & 10 \\
 1 & m_4 & m_5 & m_7 & m_6
 \end{array}
 $$
+
 例如在这里 $m_1$ 只与 $m_0$, $m_3$, $m_5$ 相邻。所以，卡诺图相邻的本质就是：**两个最小项只差一个变量**。  
 
 卡诺图中的 $m_i$ 不是按 0, 1, 2, 3 从左到右排，而是要服从格雷码 $00, 01, 11, 10$  
@@ -332,6 +335,7 @@ $$
 所以 $F=A\overline{B}\overline{C}+A\overline{B}C$，  
 提取公共项 $F=A\overline{B}(\overline{C}+C)$,所以 $F=A\overline{B}$。    
 卡诺图只是把上面代数化简的过程画出来，三变量卡诺图只要在 $m_4 m_5$ 处填 1，  
+
 $$
 \begin{array}{c|cccc}
 A\backslash BC & 00 & 01 & 11 & 10 \\
@@ -340,6 +344,7 @@ A\backslash BC & 00 & 01 & 11 & 10 \\
 1 & 1 & 1 & 0 & 0
 \end{array}
 $$
+
 所谓圈实际就是：把可以合并的相邻 1 归为一组。  
 
 $m_4$ 和 $m_5$ 中：  
@@ -383,7 +388,7 @@ $$
 先找 $Y=1$ 的行：
 
 $$
-011,\quad 110,\quad 111
+011_2,\quad 110_2,\quad 111_2
 $$
 
 它们分别对应：
@@ -416,7 +421,7 @@ $$
 #### 一般逻辑表达式填卡诺图
 $Y=A\overline{B}+BC$，第一项 $A\overline{B}$ 只规定了 $A=1, B=0$ 但没有出现 C,所以 C 可以是 0 或 1。因此 $A\overline{B}$ 实际对应两个最小项：$A\overline{B}\overline{C} = m_4$, $A\overline{B}C = m_5$ 所以这一项在 $m_4, m_5$ 填 1。  
 再看 $BC$ 规定了 $B=1, C=1$ 没有 A 所以 $A$ 可以是 0 或 1。  
-得到 $\overlineP{A}BC=m_3$ 和 $ABC=m_7$ 因此 $BC$ 对应 $m_3, m_7$ 最后的 $Y=A\overline{B} + BC$ 就在 $m_3, m_4, m_5, m_7$ 填 1。也就是 $Y=\sum m(3,4,5,7)$  
+得到 $\overline{A}BC=m_3$ 和 $ABC=m_7$ 因此 $BC$ 对应 $m_3, m_7$ 最后的 $Y=A\overline{B} + BC$ 就在 $m_3, m_4, m_5, m_7$ 填 1。也就是 $Y=\sum m(3,4,5,7)$  
 所以有**表达式中没有出现的变量，可以任意取0或1**   
 还有：  
 - 缺 1 个变量覆盖 2 个格
@@ -424,7 +429,7 @@ $Y=A\overline{B}+BC$，第一项 $A\overline{B}$ 只规定了 $A=1, B=0$ 但没�
 
 #### 卡诺图化简
 4 个相邻格，两个变量变化并消掉，只留下 1 个不变量。  
-实际就是：2 格消 1 个变量，4 格消 2 个变量，8 格消 3 个变量。以及：**1原，0 反，变化消掉。 **  
+实际就是：2 格消 1 个变量，4 格消 2 个变量，8 格消 3 个变量。以及：**1原，0 反，变化消掉。**  
 这些是单个圈，接下来是多个圈怎么选：  
 
 核心规则：  
