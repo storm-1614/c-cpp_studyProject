@@ -158,7 +158,7 @@ $$
 XY+\overline{X}Z + YZ = XY + \overline{X}Z
 $$
 
-其中 $YZ$ 为冗余的一致项。处理方法实际是：遇到第三项$YZ$可以乘$(X+\overline{X})=1$ 再拆开。  
+其中 $YZ$ 为冗余的一致项。处理方法实际是：遇到第三项 $YZ$ 可以乘 $(X+\overline{X})=1$ 再拆开。  
 
 ##### 添加项法
 配项法是把已有的一项拆开，添加项法则是先人为加一个本来就是冗余的项，再利用它取并项。关键前提是**加进去以后逻辑函数不能变。**    
@@ -211,28 +211,31 @@ $A(B+C)=AB+AC$
 $A+BC=(A+B)(A+C)$  
 
 ##### 吸收公式
-$A+AB=A$，对应的对偶式：$A(A+B)=A$  
+$A+AB=A$，对应的对偶式： $A(A+B)=A$  
 $AB$ 已经包含在 $A$ 里面了，所以是多余的。  
 
 ---
-$A+\overline{A}B=A+B$，对应的对偶式：$A(\overline{A}+B)=AB$  
+$A+\overline{A}B=A+B$，对应的对偶式： $A(\overline{A}+B)=AB$  
 
 ##### 摩根定律
 $\overline{A+B}=\overline{A}\overline{B}$  
 $\overline{AB}=\overline{A}+\overline{B}$  
 记忆口诀：**长杠拆开，符号翻转**  
 也就是：
-或变与：$+ \rightarrow \cdot$，与变或：$\cdot \rightarrow \cdot$，并且每个变量都取反。  
+或变与： $+ \rightarrow \cdot$，与变或： $\cdot \rightarrow +$，并且每个变量都取反。  
+
+#### 例题
+(1) $F=\overline{(AB + \overline{C} + \overline{A} \overline{B})\cdot \overline{AB}}$  
 
 
 ### 卡诺图化简
 
 #### 最小项及最小项表达式
 最小项要求：**每个变量都必须出现一次，而且只能出现一次**  
-对于一个三变量逻辑函数，变量是$A,B,C$，变量可以是原变量也可以是反变量。  
-比如：$ABC$, $A\overline{B}C$,$\overline{A}B\overline{C}$, $\overline{A}\overline{B}\overline{C}$。  
+对于一个三变量逻辑函数，变量是 $A,B,C$，变量可以是原变量也可以是反变量。  
+比如： $ABC$， $A\overline{B}C$， $\overline{A}B\overline{C}$， $\overline{A}\overline{B}\overline{C}$。  
 
-一个最小项对应唯一一组输入。比如 $A\overline{B}C$ 要等于一有：$A=1,B=0,C=1$，所以对应：$ABC=101_2$，而$101_2 = 5$，所以 $A\overline{B}C=m_5$ 
+一个最小项对应唯一一组输入。比如 $A\overline{B}C$ 要等于 1 时，必须有： $A=1, B=0, C=1$，所以对应： $ABC=101_2$，而 $101_2=5$，所以 $A\overline{B}C=m_5$。  
 
 
 #### 最小项表达式
@@ -258,7 +261,7 @@ $$
 AB = AB(\overline{C} + C)
 $$
 
-同理，$BC$ 缺 $A$：
+同理， $BC$ 缺 $A$：
 
 $$
 BC = (\overline{A} + A)BC
@@ -302,7 +305,7 @@ $$
 - 最小项在卡诺图中的位置不是任意的，满足相邻性规则。  
 
 几何相邻且逻辑相邻:
-- **逻辑相邻**：两个最小项,只有一个变量的形式不同,其余的都相同。逻辑相邻的最小项可以合并。$AC$: $\overline{A}C$, $A\overline{C}$   
+- **逻辑相邻**：两个最小项只有一个变量的形式不同，其余变量相同。例如， $\overline{A}C$ 与 $AC$ 只差变量 $A$，可以合并为 $C$； $A\overline{C}$ 与 $AC$ 只差变量 $C$，可以合并为 $A$。  
 
 几何相邻的含义:  
 - 一是**相邻**:紧挨的；
@@ -312,7 +315,7 @@ $$
 
 两变量的卡诺图
 
-比如三变量卡诺图，可以把 $A$ 放行，$BC$ 放列：
+比如三变量卡诺图，可以把 $A$ 放行， $BC$ 放列：
 
 $$
 \begin{array}{c|cccc}
@@ -328,9 +331,9 @@ $$
 卡诺图中的 $m_i$ 不是按 0, 1, 2, 3 从左到右排，而是要服从格雷码 $00, 01, 11, 10$  
 
 卡诺图本质上是把逻辑函数中的最小项按照只差一个变量的关系排列在表格中。  
-比如：$F=\sum{m(4,5)}$ 表示: $F=m_4+m_5$。  
+比如： $F=\sum m(4,5)$ 表示： $F=m_4+m_5$。  
 
-其中 $m_4 = A\overline{B}\overline{C}$，$m_5=A\overline{B}C$。  
+其中 $m_4=A\overline{B}\overline{C}$， $m_5=A\overline{B}C$。  
 
 所以 $F=A\overline{B}\overline{C}+A\overline{B}C$，  
 提取公共项 $F=A\overline{B}(\overline{C}+C)$,所以 $F=A\overline{B}$。    
@@ -416,10 +419,16 @@ $$
 
 如果已经得到最小项表达式，就可以跳过真值表，直接在这些最小项对应的位置填入 1。
 
-总而言之：$Y=1$ 的输入组合 -> 对应最小项位置填 1。  
+总而言之：输出为 1 的输入组合，对应的最小项位置填 1。  
 
 #### 一般逻辑表达式填卡诺图
-$Y=A\overline{B}+BC$，第一项 $A\overline{B}$ 只规定了 $A=1, B=0$ 但没有出现 C,所以 C 可以是 0 或 1。因此 $A\overline{B}$ 实际对应两个最小项：$A\overline{B}\overline{C} = m_4$, $A\overline{B}C = m_5$ 所以这一项在 $m_4, m_5$ 填 1。  
+$Y=A\overline{B}+BC$，第一项 $A\overline{B}$ 只规定了 $A=1, B=0$ 但没有出现 C,所以 C 可以是 0 或 1。因此 $A\overline{B}$ 实际对应两个最小项：  
+
+$$
+A\overline{B}\overline{C}=m_4,\qquad A\overline{B}C=m_5
+$$
+
+所以这一项在 $m_4,m_5$ 填 1。  
 再看 $BC$ 规定了 $B=1, C=1$ 没有 A 所以 $A$ 可以是 0 或 1。  
 得到 $\overline{A}BC=m_3$ 和 $ABC=m_7$ 因此 $BC$ 对应 $m_3, m_7$ 最后的 $Y=A\overline{B} + BC$ 就在 $m_3, m_4, m_5, m_7$ 填 1。也就是 $Y=\sum m(3,4,5,7)$  
 所以有**表达式中没有出现的变量，可以任意取0或1**   
@@ -442,8 +451,24 @@ $Y=A\overline{B}+BC$，第一项 $A\overline{B}$ 只规定了 $A=1, B=0$ 但没�
 
 如何判断哪些圈必须先圈：某个 1 如果只有一种合并方式，就优先把它圈起来。  
 圈组顺序：  
+
 1. 先找只有一种圈法的 1
 2. 再尽量圈大
 3. 检查所有 1 是否都已覆盖，删掉多余圈
 
+圈只能是矩形。  
+
+#### 例题
+(1) $F=BD+\overline{A}\overline{B}+A\overline{B}CD+\overline{B}C\overline{D}$ 绘制诺图。  
+
+$$
+\begin{array}{c|cccc}
+AB\backslash CD & 00 & 01 & 11 & 10 \\
+\hline
+00 & 1 & 1 & 1 & 1 \\
+01 & 0 & 1 & 1 & 0 \\
+11 & 0 & 1 & 1 & 0 \\
+10 & 0 & 0 & 1 & 1
+\end{array}
+$$
 
