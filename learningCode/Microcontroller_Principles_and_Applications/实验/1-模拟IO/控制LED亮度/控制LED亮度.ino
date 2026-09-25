@@ -8,9 +8,14 @@ void setup() {
 
 void loop() {
   int pwnscale = 25;
-  while (1) {
+  while (pwnscale < 256) {
     analogWrite(pwn, pwnscale);
-    delay(1000);
-    pwnscale = (pwnscale + 15) % 256;
+    delay(100);
+    pwnscale = (pwnscale + 15);
+  }
+  while (pwnscale > 0) {
+    analogWrite(pwn, pwnscale);
+    delay(100);
+    pwnscale = (pwnscale - 15);
   }
 }
