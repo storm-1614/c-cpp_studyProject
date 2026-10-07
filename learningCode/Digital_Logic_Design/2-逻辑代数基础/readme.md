@@ -48,7 +48,7 @@ $\text{(22)}\ AB+\overline{A}C+BCD=AB+\overline{A}C$
 ##### 反演规则（摩根定理）
 ——便于实现反函数。    
 $\overline{A+B}=\overline{A}\overline{B}$
-$\overline{A}\overline{B} = \overline{A}+\overline{B}$
+$\overline{AB} = \overline{A}+\overline{B}$
 
 
 ##### 对偶规则
@@ -190,7 +190,7 @@ $A + 1 = 1$
 $A\cdot 0 = 0$   
 $A+A=A$  
 $A\cdot A = A$  
-$A\overline{A}=A$  
+$A\overline{A}=0$  
 本质就是：  
 - 或 0 不变，或 1 必为 1。  
 - 与 1 不变，与 0 必为 0。  
@@ -300,7 +300,9 @@ $$
 需要注意的是：最小项表达式不是最简表达式。  
 
 ### 卡诺图
-![卡诺图](./卡诺图.png)
+<div align="center">
+  <img src="./卡诺图.png" alt="卡诺图" width="300">
+</div>
 
 - 最小项在卡诺图中的位置不是任意的，满足相邻性规则。  
 
@@ -482,7 +484,9 @@ $$
 
 按相邻的 1 进行圈组，红色和绿色圈表示卡诺图首尾相邻的跨边界圈：
 
-![第二道题的卡诺图（含圈组）](karnaugh-map-example-2-groups.png)
+<div align="center">
+  <img src="karnaugh-map-example-2-groups.png" alt="第二道题的卡诺图（含圈组）" width="220">
+</div>
 
 各圈对应的乘积项为：
 
@@ -504,7 +508,9 @@ $$
 
 这道题的处理方法与上一题相同：先按格雷码填写卡诺图，再圈出相邻的 1。
 
-![第三道题的卡诺图（含圈组）](karnaugh-map-example-3-groups.png)
+<div align="center">
+  <img src="karnaugh-map-example-3-groups.png" alt="第三道题的卡诺图（含圈组）" width="220">
+</div>
 
 各圈对应的乘积项为：
 
@@ -517,3 +523,23 @@ $$
 $$
 F=\overline{A}\overline{B}\overline{C}\overline{D}+BD+A\overline{C}D+AC\overline{D}+AB
 $$
+
+### 无关项
+当某些输入组合在实际使用中不会出现，或对应的输出值不影响电路功能时，这些输入组合称为无关项（don't-care conditions）。
+
+在卡诺图中，无关项用 `X` 表示。化简时，可根据需要将 `X` 当作 `0` 或 `1`，以扩大相邻分组、简化逻辑表达式；也可以不使用它。
+
+#### 二-十进制码（BCD 码）
+
+| 十进制数字 | BCD 码（8421） |
+|:---:|:---:|
+| 0 | `0000` |
+| 1 | `0001` |
+| 2 | `0010` |
+| 3 | `0011` |
+| 4 | `0100` |
+| 5 | `0101` |
+| 6 | `0110` |
+| 7 | `0111` |
+| 8 | `1000` |
+| 9 | `1001` |
