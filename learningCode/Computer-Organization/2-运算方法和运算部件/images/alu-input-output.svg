@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="570" viewBox="0 0 860 570" role="img" aria-labelledby="title desc">
+  <title id="title">ALU 的输入与输出</title>
+  <desc id="desc">ALU 接收数据 A、数据 B 和控制信号，输出运算结果 F 和状态标志，可执行加法、减法和逻辑运算。</desc>
+  <style>
+    .frame { fill: none; stroke: #3a4658; }
+    .block { fill: #e8f2ff; stroke: #4b97dc; }
+    .pill { fill: #f1f3f6; }
+    .data-wire, .result-wire, .control-wire { fill: none; stroke-width: 5; stroke-linecap: square; stroke-linejoin: round; }
+    .data-wire { stroke: #548dc4; }
+    .result-wire { stroke: #37a87e; }
+    .control-wire { stroke: #d99e37; }
+    .data-arrow { fill: #548dc4; }
+    .result-arrow { fill: #37a87e; }
+    .control-arrow { fill: #d99e37; }
+    .label, .caption, .title-label { fill: #26364a; }
+    .alu-label { fill: #245b91; }
+    .subtitle { fill: #3979b5; }
+    .pill-label { fill: #596a80; }
+    @media (prefers-color-scheme: dark) {
+      .frame { stroke: #3a4658; }
+      .block { fill: #e8f2ff; stroke: #4b97dc; }
+      .pill { fill: #f1f3f6; }
+      .label, .caption, .title-label { fill: #e0e6ef; }
+      .alu-label { fill: #245b91; }
+      .subtitle { fill: #3979b5; }
+      .pill-label { fill: #596a80; }
+    }
+  </style>
+  <rect class="frame" x="18" y="18" width="824" height="534" rx="18" />
+  <text class="title-label" x="430" y="48" text-anchor="middle" font-family="Arial, 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="16" font-weight="700">ALU 的输入与输出</text>
+
+  <g fill="none" stroke-width="5" stroke-linecap="square" stroke-linejoin="round">
+    <path class="data-wire" d="M65 285H245 M65 405H245" />
+    <path class="control-wire" d="M415 112V215" />
+    <path class="result-wire" d="M585 285H780 M585 405H780" />
+  </g>
+  <g fill="none" stroke-width="5" stroke-linecap="square" stroke-linejoin="round">
+    <path class="data-wire" d="M232 273L245 285L232 297 M232 393L245 405L232 417" />
+    <path class="control-wire" d="M403 201L415 215L427 201" />
+    <path class="result-wire" d="M767 273L780 285L767 297 M767 393L780 405L767 417" />
+  </g>
+
+  <rect class="block" x="245" y="215" width="340" height="240" rx="30" stroke-width="4" />
+  <text class="alu-label" x="415" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="58" font-weight="700">ALU</text>
+  <text class="subtitle" x="415" y="374" text-anchor="middle" font-family="Arial, 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="24">算术逻辑单元</text>
+
+  <g class="label" font-family="Arial, 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="25">
+    <text x="66" y="262">数据 A</text>
+    <text x="66" y="382">数据 B</text>
+    <text x="415" y="91" text-anchor="middle" font-size="26">控制信号</text>
+    <text x="610" y="262">运算结果 F</text>
+    <text x="610" y="382">状态标志</text>
+  </g>
+
+  <rect class="pill" x="235" y="490" width="360" height="58" rx="18" />
+  <text class="pill-label" x="415" y="527" text-anchor="middle" font-family="Arial, 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="23">加法 · 减法 · 逻辑运算</text>
+</svg>

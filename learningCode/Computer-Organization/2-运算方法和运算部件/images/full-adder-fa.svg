@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="178" viewBox="0 0 520 220" role="img" aria-labelledby="title desc">
+  <title id="title">全加器 FA 逻辑符号</title>
+  <desc id="desc">输入 A、B、Cin，输出 F 和 Cout。</desc>
+  <style>
+    .wire, .block { stroke: #24364b; }
+    .block { fill: #f5f8fc; }
+    .label, .fa-label { fill: #172b45; }
+    @media (prefers-color-scheme: dark) {
+      .wire, .block { stroke: #cbd5e1; }
+      .block { fill: #1e293b; }
+      .label, .fa-label { fill: #f1f5f9; }
+    }
+  </style>
+  <g fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <rect class="block" x="170" y="48" width="180" height="124" rx="8" />
+    <path class="wire" d="M42 78H170 M42 110H170 M42 142H170 M350 86H478 M350 134H478" />
+  </g>
+  <g class="label" font-family="Arial, Helvetica, sans-serif" font-size="21">
+    <text x="28" y="85" text-anchor="end">A</text>
+    <text x="28" y="117" text-anchor="end">B</text>
+    <text x="28" y="149" text-anchor="end">Cin</text>
+    <text x="492" y="93">F</text>
+    <text x="492" y="141">Cout</text>
+  </g>
+  <text x="260" y="121" text-anchor="middle" class="fa-label" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700">FA</text>
+</svg>

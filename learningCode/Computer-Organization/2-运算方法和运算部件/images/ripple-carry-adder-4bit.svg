@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="300" viewBox="0 0 1120 300" role="img" aria-labelledby="title desc">
+  <title id="title">4 位串行进位加法器逻辑电路图</title>
+  <desc id="desc">四个全加器从低位到高位排列。每一级的进位输出连接到高一位全加器的进位输入。FA0 是最低位，FA3 是最高位。</desc>
+  <style>
+    .wire, .block { stroke: #24364b; }
+    .block { fill: #f5f8fc; }
+    .label, .fa-label, .note { fill: #172b45; }
+    .arrow { fill: #24364b; }
+    @media (prefers-color-scheme: dark) {
+      .wire, .block { stroke: #cbd5e1; }
+      .block { fill: #1e293b; }
+      .label, .fa-label, .note { fill: #f1f5f9; }
+      .arrow { fill: #cbd5e1; }
+    }
+  </style>
+  <g fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <rect class="block" x="145" y="95" width="165" height="130" rx="8" />
+    <rect class="block" x="375" y="95" width="165" height="130" rx="8" />
+    <rect class="block" x="605" y="95" width="165" height="130" rx="8" />
+    <rect class="block" x="835" y="95" width="165" height="130" rx="8" />
+
+    <path class="wire" d="M190 62V95 M260 62V95 M420 62V95 M490 62V95 M650 62V95 M720 62V95 M880 62V95 M950 62V95" />
+    <path class="wire" d="M35 165H145 M310 165H375 M540 165H605 M770 165H835 M1000 165H1080" />
+    <path class="wire" d="M227 225V260 M457 225V260 M687 225V260 M917 225V260" />
+  </g>
+  <g class="arrow">
+    <path d="M145 159L155 165L145 171Z" />
+    <path d="M375 159L385 165L375 171Z" />
+    <path d="M605 159L615 165L605 171Z" />
+    <path d="M835 159L845 165L835 171Z" />
+    <path d="M1080 159L1090 165L1080 171Z" />
+  </g>
+  <g class="label" font-family="Arial, Helvetica, sans-serif" font-size="19">
+    <text x="190" y="50" text-anchor="middle">A0</text>
+    <text x="260" y="50" text-anchor="middle">B0</text>
+    <text x="420" y="50" text-anchor="middle">A1</text>
+    <text x="490" y="50" text-anchor="middle">B1</text>
+    <text x="650" y="50" text-anchor="middle">A2</text>
+    <text x="720" y="50" text-anchor="middle">B2</text>
+    <text x="880" y="50" text-anchor="middle">A3</text>
+    <text x="950" y="50" text-anchor="middle">B3</text>
+
+    <text x="90" y="145" text-anchor="middle">Cin = C0</text>
+    <text x="342" y="151" text-anchor="middle">C1</text>
+    <text x="572" y="151" text-anchor="middle">C2</text>
+    <text x="802" y="151" text-anchor="middle">C3</text>
+    <text x="1055" y="145" text-anchor="middle">Cout = C4</text>
+
+    <text x="227" y="282" text-anchor="middle">F0</text>
+    <text x="457" y="282" text-anchor="middle">F1</text>
+    <text x="687" y="282" text-anchor="middle">F2</text>
+    <text x="917" y="282" text-anchor="middle">F3</text>
+  </g>
+  <g class="fa-label" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700" text-anchor="middle">
+    <text x="227" y="174">FA0</text>
+    <text x="457" y="174">FA1</text>
+    <text x="687" y="174">FA2</text>
+    <text x="917" y="174">FA3</text>
+  </g>
+  <text class="note" x="572" y="25" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="17">低位 → 高位</text>
+</svg>
