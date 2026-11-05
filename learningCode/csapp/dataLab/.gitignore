@@ -1,0 +1,9 @@
+# Makefile 生成的可执行文件
+/btest
+/fshow
+/ishow
+/dlc
+
+# Makefile clean 处理的中间文件和编辑器备份
+*.o
+*~

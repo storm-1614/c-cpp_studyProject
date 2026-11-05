@@ -39,7 +39,7 @@ void test_show_bytes(int val)
 int main()
 {
     printf("test_show_bytes(12345);\n");
-    test_show_bytes(12345);
+    test_show_bytes((unsigned char)-1);
 
     printf("=======\n");
     printf("show_bytes(0x87654321, 1/2/3);\n");

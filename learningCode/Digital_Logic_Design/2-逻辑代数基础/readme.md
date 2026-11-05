@@ -212,7 +212,9 @@ $A+BC=(A+B)(A+C)$
 
 ##### 吸收公式
 $A+AB=A$，对应的对偶式： $A(A+B)=A$  
-$AB$ 已经包含在 $A$ 里面了，所以是多余的。  
+对偶式：$A(A+B)=A$  
+
+$AB$ 能成立时 $A$ 肯定已经成立，所以 $AB$ 是多余的。  
 
 ---
 $A+\overline{A}B=A+B$，对应的对偶式： $A(\overline{A}+B)=AB$  
@@ -223,6 +225,13 @@ $\overline{AB}=\overline{A}+\overline{B}$
 记忆口诀：**长杠拆开，符号翻转**  
 也就是：
 或变与： $+ \rightarrow \cdot$，与变或： $\cdot \rightarrow +$，并且每个变量都取反。  
+
+##### 一致项/冗余项
+
+$AB + \overline{A}C + BC = AB + \overline{A}C$  
+这里的 $BC$ 是冗余的一致项。会用在配项法、添加项法。  
+
+
 
 #### 例题
 (1) $F=\overline{(AB + \overline{C} + \overline{A} \overline{B})\cdot \overline{AB}}$  

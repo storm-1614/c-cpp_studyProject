@@ -1,0 +1,9 @@
+{
+  "additionalFiles": "",
+  "compiler.optimization_flags": "",
+  "customBuildProperties": "",
+  "fqbn": "arduino:avr:uno",
+  "hardwareFolders": "/home/storm/.arduino15/packages/arduino/hardware/avr/1.8.8,/home/storm/.arduino15/packages/arduino/hardware/avr/1.8.8",
+  "otherLibrariesFolders": "/home/storm/Arduino/libraries",
+  "sketchLocation": "/data/project/c-cpp_studyProject/learningCode/Microcontroller_Principles_and_Applications/实验/4-矩阵键盘/密码锁"
+}
